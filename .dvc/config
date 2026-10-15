@@ -1,0 +1,5 @@
+[core]
+    remote = storage
+['remote "storage"']
+    url = s3://dvc
+    endpointurl = https://dagshub.com/a01641354/Reto-Femsa.s3
