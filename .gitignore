@@ -18,8 +18,8 @@ __pycache__/
 models/
 
 ## Datos: Ajustar extensiones según se necesite
-data/raw/*.csv
-data/processed/*.csv
+data/raw/*.xlsx
+data/processed/*.xlsx
 !data/processed/.gitkeep
 
 ## Reportes
