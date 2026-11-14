@@ -52,3 +52,8 @@ Thumbs.db
 ## sí deben trackearse con DVC
 !data/raw/*.age
 !data/processed/*.age
+
+## Archivos de Power BI
+*.pbix
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
