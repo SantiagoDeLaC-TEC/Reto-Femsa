@@ -1,0 +1,109 @@
+table dim_calendario
+	lineageTag: 4866cce3-404c-49cb-a6ac-048e58d754e8
+
+	column periodo
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3d8cf619-f453-49a9-8e72-cfb36c76da43
+		summarizeBy: none
+		sourceColumn: periodo
+
+		variation Variation
+			isDefault
+			relationship: 106227e0-82e5-4910-a5f5-89d4b961ec24
+			defaultHierarchy: LocalDateTable_079d5d57-6bb9-4b67-bc27-ad34984fcaff.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column idx_mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 786db155-a27b-43ce-9862-41e4deb2a515
+		summarizeBy: sum
+		sourceColumn: idx_mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column anio
+		dataType: int64
+		formatString: 0
+		lineageTag: 18aaf90c-0cf6-4f80-bb33-3a8473a02c17
+		summarizeBy: sum
+		sourceColumn: anio
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 745a7b54-cbe6-4f7e-9ad3-f914ec970a0f
+		summarizeBy: sum
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_mes
+		dataType: string
+		lineageTag: 70173eae-ad47-443e-ab0c-be9bcb83cf4e
+		summarizeBy: none
+		sourceColumn: nombre_mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column periodo_etiqueta
+		dataType: string
+		lineageTag: f4254383-5380-4846-bbeb-d355ed8eb682
+		summarizeBy: none
+		sourceColumn: periodo_etiqueta
+		sortByColumn: idx_mes
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column tc_clp_mxn
+		dataType: double
+		lineageTag: d5c48d1c-016d-46b3-be14-cf884c781c30
+		summarizeBy: sum
+		sourceColumn: tc_clp_mxn
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_calendario = m
+		mode: import
+		queryGroup: 04_Dimensiones
+		source =
+				let
+				    Archivos = Archivos_SharePoint,
+				    Kardex = Table.SelectRows(Archivos, each
+				        Text.EndsWith([Folder Path], "/" & CarpetaRaiz & "Kardex/")
+				        and Text.StartsWith([Name], "kardex_")
+				        and [Extension] = ".xlsx"),
+				    Periodos = List.Sort(List.Distinct(List.Transform(Kardex[Name], each
+				        Date.EndOfMonth(Date.FromText(
+				            Text.BetweenDelimiters(_, "kardex_", ".xlsx") & "-01",
+				            [Format = "yyyy-MM-dd"]))))),
+				    Tabla = Table.FromList(Periodos, Splitter.SplitByNothing(), {"periodo"}),
+				    Tipo = Table.TransformColumnTypes(Tabla, {{"periodo", type date}}),
+				    ConIndice = Table.AddIndexColumn(Tipo, "idx_mes", 1, 1, Int64.Type),
+				    Anio = Table.AddColumn(ConIndice, "anio", each Date.Year([periodo]), Int64.Type),
+				    Mes = Table.AddColumn(Anio, "mes", each Date.Month([periodo]), Int64.Type),
+				    NombreMes = Table.AddColumn(Mes, "nombre_mes", each
+				        Date.ToText([periodo], [Format = "MMM yyyy", Culture = "es-MX"]), type text),
+				    Ultimo = List.Max(Periodos),
+				    Etiqueta = Table.AddColumn(NombreMes, "periodo_etiqueta", each
+				        if [periodo] = Ultimo then "Último mes" else [nombre_mes], type text),
+				    ConTC = Table.NestedJoin(Etiqueta, {"periodo"}, TipoCambio, {"periodo"}, "tc", JoinKind.LeftOuter),
+				    Expandido = Table.ExpandTableColumn(ConTC, "tc", {"tc_clp_mxn"}),
+				    Ordenada = Table.Sort(Expandido, {{"periodo", Order.Ascending}})
+				in
+				    Ordenada
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

@@ -19,6 +19,7 @@ table Parametros
 
 	partition Parametros = m
 		mode: import
+		queryGroup: 00_Parametros
 		source =
 				let
 				    Archivos = Archivos_SharePoint,

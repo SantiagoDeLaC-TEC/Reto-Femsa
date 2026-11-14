@@ -1,5 +1,6 @@
 expression RutaSharePoint = "https://tecmx.sharepoint.com/sites/FEMSA2" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 905ba9b5-a87d-4a65-a715-772ca212fc4a
+	queryGroup: 00_Parametros
 
 	annotation PBI_NavigationStepName = Navegación
 
@@ -7,6 +8,7 @@ expression RutaSharePoint = "https://tecmx.sharepoint.com/sites/FEMSA2" meta [Is
 
 expression CarpetaRaiz = "Reto-FEMSA/" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: ab8531e8-2141-42f2-b25c-c19da4178a08
+	queryGroup: 00_Parametros
 
 	annotation PBI_NavigationStepName = Navegación
 
@@ -18,22 +20,7 @@ expression Archivos_SharePoint =
 		in
 		    Origen
 	lineageTag: 868c1b7a-f0f8-4894-b6f2-7b9a6f41515b
-
-	annotation PBI_NavigationStepName = Navegación
-
-	annotation PBI_ResultType = Table
-
-expression Explorar_Kardex =
-		let
-		    Archivo = Table.SelectRows(Archivos_SharePoint, each
-		        [Name] = "kardex_2026-01.xlsx"){0}[Content],
-		    Libro = Excel.Workbook(Archivo, null, true),
-		    Hoja = Table.SelectRows(Libro, each
-		        [Kind] = "Sheet" and Text.Upper(Text.Trim([Name])) = "DETALLE KARDEX"){0}[Data],
-		    Encabezados = Table.PromoteHeaders(Hoja, [PromoteAllScalars = true])
-		in
-		    Encabezados
-	lineageTag: e0d9c013-5cfc-4e72-9433-290da4122a81
+	queryGroup: 01_Origen
 
 	annotation PBI_NavigationStepName = Navegación
 
@@ -45,6 +32,7 @@ expression ColumnasKardex =
 		in
 		    Origen
 	lineageTag: 44bab9d0-c462-4b48-9681-4c7af64f9550
+	queryGroup: 01_Origen
 
 	annotation PBI_NavigationStepName = Navegación
 
@@ -68,6 +56,7 @@ expression fnLeerKardex =
 		in
 		    SinBasura
 	lineageTag: 58e02f6e-f1fa-4b2d-a026-60384dddf7fb
+	queryGroup: 01_Origen
 
 	annotation PBI_NavigationStepName = Navegación
 
@@ -91,6 +80,7 @@ expression Kardex_Origen =
 		in
 		    Expandido
 	lineageTag: 54482b3d-8094-4ca7-a3f9-4443f2de07aa
+	queryGroup: 01_Origen
 
 	annotation PBI_NavigationStepName = Navegación
 
@@ -98,24 +88,139 @@ expression Kardex_Origen =
 
 expression Validar_Kardex =
 		let
-		    Origen = Table.Group(Kardex_Origen, {"periodo_archivo"}, {
+		    Origen = Table.Group(Kardex_Limpio, {"periodo"}, {
 		    {"filas", each Table.RowCount(_), Int64.Type},
 		    {"valorizacion", each List.Sum(List.Transform([VALORIZACION], each try Number.From(_) otherwise 0)), type number}})
 		in
 		    Origen
 	lineageTag: d0d9c435-f79c-40b1-ac92-dd4e7b2bfd74
+	queryGroup: 99_Validacion
 
 	annotation PBI_NavigationStepName = Navegación
 
 	annotation PBI_ResultType = Table
 
-expression Diagnostico_Kardex =
+expression fnLeerBalanza =
+		(archivo as binary) as table =>
 		let
-		    Origen = Table.SelectRows(Kardex_Origen, each [CODIGO
-		] = null or Text.Trim(Text.From([CODIGO])) = "")
+		    Libro = Excel.Workbook(archivo, null, true),
+		    Hojas = Table.SelectRows(Libro, each
+		        [Kind] = "Sheet" and Text.Upper(Text.Trim([Name])) = "FCV"),
+		    Hoja = if Table.IsEmpty(Hojas)
+		        then error "El archivo no tiene la hoja esperada de la balanza"
+		        else Hojas{0}[Data],
+		    ColumnaA = List.Transform(Hoja[Column1], each Text.Trim(Text.From(_) ?? "")),
+		    Inicio = List.PositionOf(ColumnaA, "Cuenta"),
+		    Fila1 = if Inicio = -1
+		        then error "No se encontró la fila 'Cuenta' en la balanza"
+		        else Record.ToList(Hoja{Inicio}),
+		    Fila2 = Record.ToList(Hoja{Inicio + 1}),
+		    FormatoOk =
+		        Text.Contains(Text.From(Fila1{4}) ?? "", "Balance")
+		        and Text.Trim(Text.From(Fila2{4}) ?? "") = "Débito"
+		        and Text.Trim(Text.From(Fila2{5}) ?? "") = "Crédito",
+		    Datos = if FormatoOk then Table.Skip(Hoja, Inicio + 2)
+		        else error "La balanza no tiene las columnas de Balance donde se esperan",
+		    Seleccion = Table.SelectColumns(Datos, {"Column1", "Column2", "Column5", "Column6"}),
+		    Nombres = Table.RenameColumns(Seleccion, {
+		        {"Column1", "cuenta"}, {"Column2", "descripcion"},
+		        {"Column5", "balance_debito"}, {"Column6", "balance_credito"}})
 		in
-		    Origen
-	lineageTag: 2a72b298-5d90-4530-a6ae-efce3b0a6153
+		    Nombres
+	lineageTag: 0c586fd0-2611-45bb-9122-81f4508c4e54
+	queryGroup: 01_Origen
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Function
+
+expression Balanza_Origen =
+		let
+		    Archivos = Archivos_SharePoint,
+		    Balanzas = Table.SelectRows(Archivos, each
+		        Text.EndsWith([Folder Path], "/" & CarpetaRaiz & "Balanza/")
+		        and Text.StartsWith([Name], "balanza_")
+		        and [Extension] = ".xlsx"),
+		    ConPeriodo = Table.AddColumn(Balanzas, "periodo", each
+		        Date.EndOfMonth(Date.FromText(
+		            Text.BetweenDelimiters([Name], "balanza_", ".xlsx") & "-01",
+		            [Format = "yyyy-MM-dd"])), type date),
+		    Leidas = Table.AddColumn(ConPeriodo, "datos", each fnLeerBalanza([Content])),
+		    Solo = Table.SelectColumns(Leidas, {"Name", "periodo", "datos"}),
+		    Renombrado = Table.RenameColumns(Solo, {{"Name", "archivo"}}),
+		    Expandido = Table.ExpandTableColumn(Renombrado, "datos",
+		        {"cuenta", "descripcion", "balance_debito", "balance_credito"})
+		in
+		    Expandido
+	lineageTag: 97133282-0e8c-4902-a562-10f58132431b
+	queryGroup: 01_Origen
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
+expression Kardex_Limpio =
+		let
+		    Origen = Kardex_Origen,
+		    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"CODIGO", type text}}),
+		    #"Texto recortado" = Table.TransformColumns(#"Tipo cambiado",{{"CODIGO", Text.Trim, type text}}),
+		    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Texto recortado",{{"DESCRIPTOR", type text}, {"LINEA", type text}, {"NOMBRE LINEA", type text}, {"POLITICA CJE AL 30SEP", type text}}),
+		    #"Texto recortado1" = Table.TransformColumns(#"Tipo cambiado1",{{"DESCRIPTOR", Text.Trim, type text}, {"LINEA", Text.Trim, type text}, {"NOMBRE LINEA", Text.Trim, type text}, {"POLITICA CJE AL 30SEP", Text.Trim, type text}}),
+		    #"Tipo cambiado2" = Table.TransformColumnTypes(#"Texto recortado1",{{"STOCK", type number}, {"COSTO", type number}, {"VALORIZACION", type number}, {"UNID CONV", type number}}),
+		    #"Tipo cambiado con configuración regional" = Table.TransformColumnTypes(#"Tipo cambiado2", {{"FULCOM", type date}}, "es-CL"),
+		    #"Tipo cambiado con configuración regional1" = Table.TransformColumnTypes(#"Tipo cambiado con configuración regional", {{"PERIODO", type date}}, "es-CL"),
+		    #"Errores reemplazados" = Table.ReplaceErrorValues(#"Tipo cambiado con configuración regional1", {{"UNID CONV", null}}),
+		    #"Valor reemplazado" = Table.ReplaceValue(#"Errores reemplazados","",null,Replacer.ReplaceValue,{"CODIGO", "DESCRIPTOR", "LINEA", "NOMBRE LINEA", "POLITICA CJE AL 30SEP"}),
+		    #"Personalizada agregada" = Table.AddColumn(#"Valor reemplazado", "tiene_nulos", each List.Contains(Record.FieldValues(Record.SelectFields(_, ColumnasKardex)), null)),
+		    #"Tipo cambiado3" = Table.TransformColumnTypes(#"Personalizada agregada",{{"tiene_nulos", type logical}}),
+		    #"Personalizada agregada1" = Table.AddColumn(#"Tipo cambiado3", "columnas_nulas", each Text.Combine(List.Select(ColumnasKardex, (c) => Record.Field(_, c) = null), ", ")),
+		    #"Tipo cambiado4" = Table.TransformColumnTypes(#"Personalizada agregada1",{{"columnas_nulas", type text}}),
+		    #"Personalizada agregada2" = Table.AddColumn(#"Tipo cambiado4", "flag_periodo_inconsistente", each Date.EndOfMonth([PERIODO]) <> [periodo_archivo]),
+		    #"Tipo cambiado5" = Table.TransformColumnTypes(#"Personalizada agregada2",{{"flag_periodo_inconsistente", type logical}}),
+		    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado5",{"PERIODO"}),
+		    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columnas quitadas",{{"periodo_archivo", "periodo"}})
+		in
+		    #"Columnas con nombre cambiado"
+	lineageTag: c9a5e6b3-ba5a-457a-ab0b-97b3159d3e54
+	queryGroup: 02_Staging
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
+expression TipoCambio =
+		let
+		    Archivos = Archivos_SharePoint,
+		    Archivo = Table.SelectRows(Archivos, each
+		        Text.EndsWith([Folder Path], "/" & CarpetaRaiz & "TipoCambio/")
+		        and [Name] = "tipo_cambio_clp_mxn.xlsx"),
+		    Contenido = if Table.RowCount(Archivo) <> 1
+		        then error "Se esperaba exactamente un archivo tipo_cambio_clp_mxn.xlsx"
+		        else Archivo{0}[Content],
+		    Libro = Excel.Workbook(Contenido, null, true),
+		    Hojas = Table.SelectRows(Libro, each
+		        [Kind] = "Sheet" and Text.Upper(Text.Trim([Name])) = "CONSULTA"),
+		    Hoja = if Table.IsEmpty(Hojas)
+		        then error "El archivo no tiene la hoja Consulta"
+		        else Hojas{0}[Data],
+		    ColumnaA = List.Transform(Hoja[Column1], each Text.Trim(Text.From(_) ?? "")),
+		    Inicio = List.PositionOf(ColumnaA, "Fecha"),
+		    Datos = if Inicio = -1
+		        then error "No se encontró la fila 'Fecha' en el tipo de cambio"
+		        else Table.Skip(Hoja, Inicio + 1),
+		    Seleccion = Table.SelectColumns(Datos, {"Column1", "Column2"}),
+		    Nombres = Table.RenameColumns(Seleccion, {{"Column1", "fecha"}, {"Column2", "tc"}}),
+		    Tipos = Table.TransformColumns(Nombres, {
+		        {"fecha", each try Date.From(_) otherwise null, type date},
+		        {"tc", each try Number.From(_) otherwise null, type number}}),
+		    Validas = Table.SelectRows(Tipos, each [fecha] <> null and [tc] <> null),
+		    ConPeriodo = Table.AddColumn(Validas, "periodo", each Date.EndOfMonth([fecha]), type date),
+		    Cierre = Table.Group(ConPeriodo, {"periodo"},
+		        {{"tc_clp_mxn", each Table.Max(_, "fecha")[tc], type number}})
+		in
+		    Cierre
+	lineageTag: c0d3d581-12a1-41e1-8cb8-53abfd6961d3
+	queryGroup: 02_Staging
 
 	annotation PBI_NavigationStepName = Navegación
 

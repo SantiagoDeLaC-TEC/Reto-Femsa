@@ -1,0 +1,60 @@
+table fact_balanza
+	lineageTag: e6a4e13a-55cf-4e3f-9b16-c124cbccc17a
+
+	column periodo
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e3e841e1-6d20-4082-bec8-cfd13d27ed3d
+		summarizeBy: none
+		sourceColumn: periodo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column archivo
+		dataType: string
+		lineageTag: 907110e9-738f-4f50-ad0b-63c797990fc9
+		summarizeBy: none
+		sourceColumn: archivo
+
+		annotation SummarizationSetBy = Automatic
+
+	column cuenta
+		dataType: string
+		lineageTag: abedc7e9-0ba8-470c-a0d6-2e2cf5b41c4c
+		summarizeBy: none
+		sourceColumn: cuenta
+
+		annotation SummarizationSetBy = Automatic
+
+	column saldo
+		dataType: double
+		lineageTag: 8c588c4a-eddd-4d3f-a7d0-3a4b8dfdfd7e
+		summarizeBy: sum
+		sourceColumn: saldo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_balanza = m
+		mode: import
+		queryGroup: 03_Hechos
+		source =
+				let
+				    Origen = Balanza_Origen,
+				    Cuenta = Text.From(Parametros{[parametro = "cuenta_existencias"]}[valor]),
+				    Filtrada = Table.SelectRows(Origen, each Text.Trim(Text.From([cuenta]) ?? "") = Cuenta),
+				    Tipos = Table.TransformColumnTypes(Filtrada, {
+				        {"balance_debito", type number}, {"balance_credito", type number}}),
+				    Saldo = Table.AddColumn(Tipos, "saldo",
+				        each ([balance_debito] ?? 0) - ([balance_credito] ?? 0), type number),
+				    Final = Table.SelectColumns(Saldo, {"periodo", "archivo", "cuenta", "saldo"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

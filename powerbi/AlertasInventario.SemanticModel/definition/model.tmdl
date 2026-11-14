@@ -7,13 +7,41 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
+queryGroup 00_Parametros
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 01_Origen
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup 02_Staging
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup 03_Hechos
+
+	annotation PBI_QueryGroupOrder = 3
+
+queryGroup 99_Validacion
+
+	annotation PBI_QueryGroupOrder = 4
+
+queryGroup 04_Dimensiones
+
+	annotation PBI_QueryGroupOrder = 5
+
 annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["RutaSharePoint","CarpetaRaiz","Archivos_SharePoint","Parametros","Explorar_Kardex","ColumnasKardex","fnLeerKardex","Kardex_Origen","Validar_Kardex","Diagnostico_Kardex"]
+annotation PBI_QueryOrder = ["RutaSharePoint","CarpetaRaiz","Archivos_SharePoint","Parametros","ColumnasKardex","fnLeerKardex","fnLeerBalanza","Kardex_Origen","Balanza_Origen","Validar_Kardex","Kardex_Limpio","fact_balanza","TipoCambio","dim_calendario"]
 
 ref table Parametros
+ref table fact_balanza
+ref table DateTableTemplate_ffe31367-560a-4f58-bd17-fe5f86840091
+ref table dim_calendario
+ref table LocalDateTable_079d5d57-6bb9-4b67-bc27-ad34984fcaff
 
 ref cultureInfo es-ES
 

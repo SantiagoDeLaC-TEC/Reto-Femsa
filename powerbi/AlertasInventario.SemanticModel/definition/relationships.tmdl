@@ -1,0 +1,9 @@
+relationship 106227e0-82e5-4910-a5f5-89d4b961ec24
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_calendario.periodo
+	toColumn: LocalDateTable_079d5d57-6bb9-4b67-bc27-ad34984fcaff.Date
+
+relationship f22ed4a1-295b-c537-5d76-63d04fd33365
+	fromColumn: fact_balanza.periodo
+	toColumn: dim_calendario.periodo
+
