@@ -1,0 +1,49 @@
+table dim_producto
+	lineageTag: 90d45076-5edd-4815-b2dc-b200a6c4319f
+
+	column CODIGO
+		lineageTag: 6c6abc8b-b6b1-4b4a-aa19-97310c1615e8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: fact_kardex[CODIGO]
+
+		annotation SummarizationSetBy = Automatic
+
+	column LINEA
+		lineageTag: e41fc708-c65d-4dc6-a927-6ae53eca7f43
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: fact_kardex[LINEA]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'NOMBRE LINEA'
+		lineageTag: 5c37f87b-8c59-48ea-a29b-eac9a44cba2e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: fact_kardex[NOMBRE LINEA]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'POLITICA CJE AL 30SEP'
+		lineageTag: 0286a8fa-16f2-4611-8634-2ee21090ceab
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: fact_kardex[POLITICA CJE AL 30SEP]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_producto = calculated
+		mode: import
+		source =
+				
+				SUMMARIZE (
+				    fact_kardex,
+				    fact_kardex[CODIGO],
+				    fact_kardex[LINEA],
+				    fact_kardex[NOMBRE LINEA],
+				    fact_kardex[POLITICA CJE AL 30SEP]
+				)
+
+	annotation PBI_Id = c1bb1a14223f4ee9a3d2cd25e5de4f57
+

@@ -1,0 +1,42 @@
+table dim_alerta
+	lineageTag: b42efc5b-8526-4110-b91e-96ef2ed5a368
+
+	column alerta
+		dataType: string
+		lineageTag: c610e68a-fe90-4a30-9393-de479ceee4cd
+		summarizeBy: none
+		sourceColumn: alerta
+		sortByColumn: orden
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column orden
+		dataType: int64
+		formatString: 0
+		lineageTag: ee0ae880-1d31-45e9-8966-94c5a2f69a88
+		summarizeBy: none
+		sourceColumn: orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column color
+		dataType: string
+		lineageTag: 3c453fb1-f7d0-4740-8c9e-7ba065911dcb
+		summarizeBy: none
+		sourceColumn: color
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_alerta = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCsrPylfSUTIEYmVnA2NLIyelWJ1opcONuUmJRUBBI5CEq5mlm4EBWCIstSglFShmDBI3crVwMjUHiwdn5imkpSZnJALFTUBy5m4gCJZzC/Vx9vdVSCstKS0CyZuC5E2dQFApNhYA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [alerta = _t, orden = _t, color = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"alerta", type text}, {"orden", Int64.Type}, {"color", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_ResultType = Table
+

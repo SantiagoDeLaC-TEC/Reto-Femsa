@@ -226,3 +226,19 @@ expression TipoCambio =
 
 	annotation PBI_ResultType = Table
 
+expression Validar_Producto =
+		let
+		    Origen = Table.SelectRows(
+		    Table.Group(Kardex_Limpio, {"CODIGO"}, {
+		        {"lineas", each List.Count(List.Distinct([LINEA])), Int64.Type},
+		        {"politicas", each List.Count(List.Distinct([#"POLITICA CJE AL 30SEP"])), Int64.Type}}),
+		    each [lineas] > 1 or [politicas] > 1)
+		in
+		    Origen
+	lineageTag: a9590498-00a0-4143-a822-57e1859d301d
+	queryGroup: 99_Validacion
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

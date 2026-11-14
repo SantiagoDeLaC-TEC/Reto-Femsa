@@ -4,14 +4,14 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 0,
-        "y": 90
+        "x": 294.16666030883789,
+        "y": 75
       },
       "nodes": [
         {
           "location": {
-            "x": 568,
-            "y": 86
+            "x": 1018.0304346875923,
+            "y": 148.14040855817757
           },
           "nodeIndex": "Parametros",
           "nodeLineageTag": "b625cc5c-72c9-4f87-82f6-a9d8a6419d13",
@@ -23,21 +23,21 @@
         },
         {
           "location": {
-            "x": 0,
-            "y": 26
+            "x": 355.78254865093464,
+            "y": 206.80019864870889
           },
           "nodeIndex": "dim_calendario",
           "nodeLineageTag": "4866cce3-404c-49cb-a6ac-048e58d754e8",
           "size": {
-            "height": 248,
+            "height": 266.72539729741754,
             "width": 234
           },
           "zIndex": 0
         },
         {
           "location": {
-            "x": 284,
-            "y": 62
+            "x": 368.26428783837923,
+            "y": 0
           },
           "nodeIndex": "fact_balanza",
           "nodeLineageTag": "e6a4e13a-55cf-4e3f-9b16-c124cbccc17a",
@@ -49,13 +49,65 @@
         },
         {
           "location": {
-            "x": 279.5,
-            "y": 280
+            "x": 635.2825486509347,
+            "y": 298.51342207108956
           },
           "nodeIndex": "fact_kardex",
           "nodeLineageTag": "2fa4d18f-a96c-4a12-94cf-d056e0ab40d6",
           "size": {
             "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 356.65793107969745,
+            "y": 506.6218927931136
+          },
+          "nodeIndex": "dim_producto",
+          "nodeLineageTag": "90d45076-5edd-4815-b2dc-b200a6c4319f",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 629.05529234268329,
+            "y": 653.7203036034432
+          },
+          "nodeIndex": "dim_alerta",
+          "nodeLineageTag": "b42efc5b-8526-4110-b91e-96ef2ed5a368",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1019.157676127189,
+            "y": 32.851645493470144
+          },
+          "nodeIndex": "Moneda",
+          "nodeLineageTag": "1404cf66-c286-45d8-a42d-0e05f790f7a6",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1019.7767166659248,
+            "y": 286.00919414440477
+          },
+          "nodeIndex": "_Medidas",
+          "nodeLineageTag": "b2d58dc1-3dd8-4afe-94ba-36812cb752ff",
+          "size": {
+            "height": 104,
             "width": 234
           },
           "zIndex": 0

@@ -94,25 +94,34 @@ table fact_kardex
 
 	column LINEA
 		dataType: string
+		isHidden
 		lineageTag: 07ee3baa-be91-40cf-a74e-b0d939a9799d
 		summarizeBy: none
 		sourceColumn: LINEA
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column 'NOMBRE LINEA'
 		dataType: string
+		isHidden
 		lineageTag: 112054fb-000c-4b51-915c-582eea015e32
 		summarizeBy: none
 		sourceColumn: NOMBRE LINEA
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column 'POLITICA CJE AL 30SEP'
 		dataType: string
+		isHidden
 		lineageTag: 98c783d4-26b9-4333-8879-e3e9f29710ae
 		summarizeBy: none
 		sourceColumn: POLITICA CJE AL 30SEP
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -180,9 +189,12 @@ table fact_kardex
 
 	column alerta_antiguedad
 		dataType: string
+		isHidden
 		lineageTag: 9f5ec45e-6c6c-4a92-afde-12acaf6449c6
 		summarizeBy: none
 		sourceColumn: alerta_antiguedad
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

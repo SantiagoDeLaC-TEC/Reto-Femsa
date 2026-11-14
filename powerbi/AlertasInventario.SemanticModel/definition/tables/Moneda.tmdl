@@ -1,0 +1,22 @@
+table Moneda
+	lineageTag: 1404cf66-c286-45d8-a42d-0e05f790f7a6
+
+	column moneda
+		dataType: string
+		lineageTag: 0a64c6fb-8ced-4760-91cb-98affc21f26e
+		summarizeBy: none
+		sourceColumn: moneda
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Moneda = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WcvYJUIrViVbyjfBTio0FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [moneda = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"moneda", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_ResultType = Table
+

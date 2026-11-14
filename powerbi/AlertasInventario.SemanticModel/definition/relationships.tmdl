@@ -16,3 +16,11 @@ relationship d6df5f67-5e4a-fa19-892e-fc1a41435c5f
 	fromColumn: fact_kardex.periodo
 	toColumn: dim_calendario.periodo
 
+relationship 8235d280-7f87-db9e-d53c-c057b2392063
+	fromColumn: fact_kardex.CODIGO
+	toColumn: dim_producto.CODIGO
+
+relationship 04c8f479-3de8-602b-61f2-435a3f5a6258
+	fromColumn: fact_kardex.alerta_antiguedad
+	toColumn: dim_alerta.alerta
+
