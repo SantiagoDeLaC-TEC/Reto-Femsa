@@ -40,7 +40,7 @@ Aquí se documenta el formato de los archivos en crudo para evitar tener problem
 
 ## Tipo de Cambio (Un Solo Archivo)
 
-* **Nombre de la hoja de interés:** "Consulta" (Es la única)
+* **Nombre de la hoja de interés:** "Consulta" (Hay una hoja oculta llamada "Acerno\_Cache\_XXXXX")
 * **Encabezados:** Empiezan en la 10ma fila, aunque el importante es el de la 12da
 * **Formato de Fecha:** Fecha
 * **Formato de la unidad de cambio:** $1 MXN → CLP
