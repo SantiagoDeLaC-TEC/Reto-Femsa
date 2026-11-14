@@ -283,6 +283,49 @@ table fact_kardex
 
 		annotation SummarizationSetBy = Automatic
 
+	column alerta_mes_anterior
+		dataType: string
+		lineageTag: 528fa30f-9cc7-4f98-ad97-e6bb194658c2
+		summarizeBy: none
+		sourceColumn: alerta_mes_anterior
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado_mes_anterior
+		dataType: string
+		lineageTag: a590029c-3f26-4f31-96b6-1f18b5c9e496
+		summarizeBy: none
+		sourceColumn: estado_mes_anterior
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_sku_nuevo
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a3ee80ae-07da-41cd-8cc8-50d2f8187ae2
+		summarizeBy: none
+		sourceColumn: flag_sku_nuevo
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_migro_a_rojo
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: cfe38630-0596-4e5c-8e37-21c7e102dc5b
+		summarizeBy: none
+		sourceColumn: flag_migro_a_rojo
+
+		annotation SummarizationSetBy = Automatic
+
+	column es_alerta_nueva
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3db8d6b7-33ad-4ce2-81ea-d1a4aab250c2
+		summarizeBy: none
+		sourceColumn: es_alerta_nueva
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fact_kardex = m
 		mode: import
 		queryGroup: 03_Hechos
@@ -366,9 +409,35 @@ table fact_kardex
 				             then "REVISAR"
 				             else if [alerta_antiguedad] = "Ámbar" then "MONITOREAR"
 				             else "OK", type text),
-				    #"Filas filtradas" = Table.SelectRows(Estado, each true)
+				
+				    // Comparación contra el mes anterior
+				    PeriodoAnterior = Table.AddColumn(Estado, "periodo_anterior",
+				        each Date.EndOfMonth(Date.AddMonths([periodo], -1)), type date),
+				    EnMemoria2 = Table.Buffer(PeriodoAnterior),
+				    PrimerPeriodo = List.Min(EnMemoria2[periodo]),
+				    Unico = Table.SelectColumns(
+				        Table.Distinct(Table.SelectRows(EnMemoria2, each [CODIGO] <> null), {"periodo", "CODIGO"}),
+				        {"periodo", "CODIGO", "alerta_antiguedad", "estado_general"}),
+				    ConAnterior = Table.NestedJoin(EnMemoria2, {"periodo_anterior", "CODIGO"},
+				        Unico, {"periodo", "CODIGO"}, "anterior", JoinKind.LeftOuter),
+				    Expandido2 = Table.ExpandTableColumn(ConAnterior, "anterior",
+				        {"alerta_antiguedad", "estado_general"},
+				        {"alerta_mes_anterior", "estado_mes_anterior"}),
+				    SkuNuevo = Table.AddColumn(Expandido2, "flag_sku_nuevo",
+				        each if [periodo] = PrimerPeriodo or [CODIGO] = null then null
+				             else [estado_mes_anterior] = null, type logical),
+				    MigroRojo = Table.AddColumn(SkuNuevo, "flag_migro_a_rojo",
+				        each if [periodo] = PrimerPeriodo or [CODIGO] = null then null
+				             else [alerta_antiguedad] = "Rojo"
+				                  and [alerta_mes_anterior] <> null
+				                  and [alerta_mes_anterior] <> "Rojo", type logical),
+				    AlertaNueva = Table.AddColumn(MigroRojo, "es_alerta_nueva",
+				        each if [periodo] = PrimerPeriodo or [CODIGO] = null then null
+				             else [estado_general] = "REVISAR"
+				                  and [estado_mes_anterior] <> "REVISAR", type logical),
+				    Final = Table.RemoveColumns(AlertaNueva, {"periodo_anterior"})
 				in
-				    #"Filas filtradas"
+				    Final
 
 	annotation PBI_NavigationStepName = Navegación
 

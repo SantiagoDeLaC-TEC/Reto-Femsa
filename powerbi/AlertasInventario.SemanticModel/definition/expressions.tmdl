@@ -88,7 +88,7 @@ expression Kardex_Origen =
 
 expression Validar_Kardex =
 		let
-		    Origen = Table.Group(Kardex_Limpio, {"periodo"}, {
+		    Origen = Table.Group(fact_kardex, {"periodo"}, {
 		    {"filas", each Table.RowCount(_), Int64.Type},
 		    {"valorizacion", each List.Sum(List.Transform([VALORIZACION], each try Number.From(_) otherwise 0)), type number}})
 		in
