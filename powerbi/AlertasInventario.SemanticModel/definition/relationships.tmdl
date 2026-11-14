@@ -7,3 +7,12 @@ relationship f22ed4a1-295b-c537-5d76-63d04fd33365
 	fromColumn: fact_balanza.periodo
 	toColumn: dim_calendario.periodo
 
+relationship a672c9f2-3d90-4439-9c88-3e44f885e01e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_kardex.FULCOM
+	toColumn: LocalDateTable_d19a3a0b-bab2-400e-98cf-c40f8315736d.Date
+
+relationship d6df5f67-5e4a-fa19-892e-fc1a41435c5f
+	fromColumn: fact_kardex.periodo
+	toColumn: dim_calendario.periodo
+

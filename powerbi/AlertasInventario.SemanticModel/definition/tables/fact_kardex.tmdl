@@ -1,0 +1,376 @@
+table fact_kardex
+	lineageTag: 2fa4d18f-a96c-4a12-94cf-d056e0ab40d6
+
+	column archivo
+		dataType: string
+		lineageTag: 9c3cd06f-7cc6-4ee2-b231-36f2f229af45
+		summarizeBy: none
+		sourceColumn: archivo
+
+		annotation SummarizationSetBy = Automatic
+
+	column periodo
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e300e715-a894-415f-b21a-4e38a1cb8342
+		summarizeBy: none
+		sourceColumn: periodo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CODIGO
+		dataType: string
+		lineageTag: dd54b9a5-48ac-4181-b69d-1ef8186cbdc5
+		summarizeBy: none
+		sourceColumn: CODIGO
+
+		annotation SummarizationSetBy = Automatic
+
+	column DESCRIPTOR
+		dataType: string
+		lineageTag: 67bfe790-cfd5-4dd1-a259-2b2ac6144b19
+		summarizeBy: none
+		sourceColumn: DESCRIPTOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column STOCK
+		dataType: double
+		lineageTag: c6866f89-6f9e-4b6d-b339-e1c2fdede495
+		summarizeBy: sum
+		sourceColumn: STOCK
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COSTO
+		dataType: double
+		lineageTag: ff6a3c86-79df-44a8-b4a4-3d9e6a6b1985
+		summarizeBy: sum
+		sourceColumn: COSTO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VALORIZACION
+		dataType: double
+		lineageTag: 8c14ce25-9328-4a94-a288-76023cc85a81
+		summarizeBy: sum
+		sourceColumn: VALORIZACION
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FULCOM
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fa227153-53a0-4cd1-a4a5-6d8fc4387f4e
+		summarizeBy: none
+		sourceColumn: FULCOM
+
+		variation Variation
+			isDefault
+			relationship: a672c9f2-3d90-4439-9c88-3e44f885e01e
+			defaultHierarchy: LocalDateTable_d19a3a0b-bab2-400e-98cf-c40f8315736d.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'UNID CONV'
+		dataType: double
+		lineageTag: 97015864-8b98-45fe-8faf-6b6850d96e5c
+		summarizeBy: sum
+		sourceColumn: UNID CONV
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LINEA
+		dataType: string
+		lineageTag: 07ee3baa-be91-40cf-a74e-b0d939a9799d
+		summarizeBy: none
+		sourceColumn: LINEA
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'NOMBRE LINEA'
+		dataType: string
+		lineageTag: 112054fb-000c-4b51-915c-582eea015e32
+		summarizeBy: none
+		sourceColumn: NOMBRE LINEA
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'POLITICA CJE AL 30SEP'
+		dataType: string
+		lineageTag: 98c783d4-26b9-4333-8879-e3e9f29710ae
+		summarizeBy: none
+		sourceColumn: POLITICA CJE AL 30SEP
+
+		annotation SummarizationSetBy = Automatic
+
+	column tiene_nulos
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 9c1ea3bf-2e66-4fa5-b203-375ed229f574
+		summarizeBy: none
+		sourceColumn: tiene_nulos
+
+		annotation SummarizationSetBy = Automatic
+
+	column columnas_nulas
+		dataType: string
+		lineageTag: 13ae77f7-6823-42ec-a988-28dd9e664c5d
+		summarizeBy: none
+		sourceColumn: columnas_nulas
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_periodo_inconsistente
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3c9c3192-6fa7-4050-af92-824dea2a9572
+		summarizeBy: none
+		sourceColumn: flag_periodo_inconsistente
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_fulcom_nula
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: cb201494-e24a-4ac2-b70f-34fcc96125e2
+		summarizeBy: none
+		sourceColumn: flag_fulcom_nula
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_fulcom_futura
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6f590253-d3fc-404f-81a0-3aae6d5fda24
+		summarizeBy: none
+		sourceColumn: flag_fulcom_futura
+
+		annotation SummarizationSetBy = Automatic
+
+	column dias_antiguedad
+		dataType: int64
+		formatString: 0
+		lineageTag: 19fe125a-a6ee-46af-90f1-0775cb2570f1
+		summarizeBy: sum
+		sourceColumn: dias_antiguedad
+
+		annotation SummarizationSetBy = Automatic
+
+	column meses_antiguedad
+		dataType: int64
+		formatString: 0
+		lineageTag: 78132c38-efdf-4b69-80a0-4580552c1145
+		summarizeBy: sum
+		sourceColumn: meses_antiguedad
+
+		annotation SummarizationSetBy = Automatic
+
+	column alerta_antiguedad
+		dataType: string
+		lineageTag: 9f5ec45e-6c6c-4a92-afde-12acaf6449c6
+		summarizeBy: none
+		sourceColumn: alerta_antiguedad
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_proximo_rojo
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 86188317-6e14-405e-9f5a-81175ead57eb
+		summarizeBy: none
+		sourceColumn: flag_proximo_rojo
+
+		annotation SummarizationSetBy = Automatic
+
+	column dias_para_rojo
+		dataType: int64
+		formatString: 0
+		lineageTag: 8baecaa1-87d2-44fa-8b5b-f1807cb8f46b
+		summarizeBy: sum
+		sourceColumn: dias_para_rojo
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_calculado
+		dataType: double
+		lineageTag: eed3f9bd-e167-46f7-8835-80443a78ca78
+		summarizeBy: sum
+		sourceColumn: valor_calculado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column dif_valorizacion
+		dataType: double
+		lineageTag: 841a9f97-7688-4add-871b-c2de4e80c88f
+		summarizeBy: sum
+		sourceColumn: dif_valorizacion
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column flag_dif_valorizacion
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ab7cc818-33a8-46d5-b46d-710a7cf525e7
+		summarizeBy: none
+		sourceColumn: flag_dif_valorizacion
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_naturaleza_contraria
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3ca2fda3-149c-4234-8402-dc2000480f3a
+		summarizeBy: none
+		sourceColumn: flag_naturaleza_contraria
+
+		annotation SummarizationSetBy = Automatic
+
+	column alerta_stock
+		dataType: string
+		lineageTag: 9566253d-a2b2-4dd7-bf8b-3ddaf5059eef
+		summarizeBy: none
+		sourceColumn: alerta_stock
+
+		annotation SummarizationSetBy = Automatic
+
+	column alerta_costo
+		dataType: string
+		lineageTag: 43ac19a0-2ef0-4923-9443-88e4f60576c1
+		summarizeBy: none
+		sourceColumn: alerta_costo
+
+		annotation SummarizationSetBy = Automatic
+
+	column alerta_conversion
+		dataType: string
+		lineageTag: 7c3e5e5e-184c-4852-9bdc-d40caaa150b1
+		summarizeBy: none
+		sourceColumn: alerta_conversion
+
+		annotation SummarizationSetBy = Automatic
+
+	column flag_duplicado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 995dd6ad-eb3a-4cbf-876d-5c3d582314f6
+		summarizeBy: none
+		sourceColumn: flag_duplicado
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado_general
+		dataType: string
+		lineageTag: 30ff94e2-5a37-4197-886d-d1debba60dab
+		summarizeBy: none
+		sourceColumn: estado_general
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_kardex = m
+		mode: import
+		queryGroup: 03_Hechos
+		source =
+				let
+				    Origen = Kardex_Limpio,
+				    Param = (nombre as text) => Number.From(Parametros{[parametro = nombre]}[valor]),
+				    DiasVerde = Param("dias_verde"),
+				    DiasRojo = Param("dias_rojo"),
+				    DiasProximoRojo = Param("dias_proximo_rojo"),
+				    TolValorizacion = Param("tol_valorizacion"),
+				    TolConversion = Param("tol_conversion"),
+				
+				    // Antigüedad
+				    FulcomNula = Table.AddColumn(Origen, "flag_fulcom_nula",
+				        each [FULCOM] = null, type logical),
+				    FulcomFutura = Table.AddColumn(FulcomNula, "flag_fulcom_futura",
+				        each [FULCOM] <> null and [FULCOM] > [periodo], type logical),
+				    Dias = Table.AddColumn(FulcomFutura, "dias_antiguedad",
+				        each if [flag_fulcom_nula] or [flag_fulcom_futura] then null
+				             else Duration.Days([periodo] - [FULCOM]), Int64.Type),
+				    Meses = Table.AddColumn(Dias, "meses_antiguedad",
+				        each if [dias_antiguedad] = null then null
+				             else (Date.Year([periodo]) - Date.Year([FULCOM])) * 12
+				                  + Date.Month([periodo]) - Date.Month([FULCOM]), Int64.Type),
+				    AlertaAntiguedad = Table.AddColumn(Meses, "alerta_antiguedad",
+				        each if [flag_fulcom_nula] then "Sin fecha"
+				             else if [flag_fulcom_futura] then "FULCOM futura"
+				             else if [dias_antiguedad] <= DiasVerde then "Verde"
+				             else if [dias_antiguedad] <= DiasRojo then "Ámbar"
+				             else "Rojo", type text),
+				    ProximoRojo = Table.AddColumn(AlertaAntiguedad, "flag_proximo_rojo",
+				        each [dias_antiguedad] <> null and [dias_antiguedad] > DiasProximoRojo
+				             and [dias_antiguedad] <= DiasRojo, type logical),
+				    DiasParaRojo = Table.AddColumn(ProximoRojo, "dias_para_rojo",
+				        each if [dias_antiguedad] = null then null
+				             else DiasRojo - [dias_antiguedad], Int64.Type),
+				
+				    // Valorización
+				    ValorCalculado = Table.AddColumn(DiasParaRojo, "valor_calculado",
+				        each if [CODIGO] = null or [COSTO] = null then null
+				             else [STOCK] * [COSTO], type number),
+				    DifValorizacion = Table.AddColumn(ValorCalculado, "dif_valorizacion",
+				        each if [VALORIZACION] = null or [valor_calculado] = null then null
+				             else [VALORIZACION] - [valor_calculado], type number),
+				    FlagDif = Table.AddColumn(DifValorizacion, "flag_dif_valorizacion",
+				        each [dif_valorizacion] <> null
+				             and Number.Abs([dif_valorizacion]) > TolValorizacion, type logical),
+				    NaturalezaContraria = Table.AddColumn(FlagDif, "flag_naturaleza_contraria",
+				        each [VALORIZACION] <> null and [VALORIZACION] < 0, type logical),
+				
+				    // Stock, costo y conversión
+				    AlertaStock = Table.AddColumn(NaturalezaContraria, "alerta_stock",
+				        each if [STOCK] = null then "Sin dato"
+				             else if [STOCK] < 0 then "Negativo"
+				             else if [STOCK] = 0 then "Cero"
+				             else "Ok", type text),
+				    AlertaCosto = Table.AddColumn(AlertaStock, "alerta_costo",
+				        each if [COSTO] = null or [COSTO] <= 0 then "Inválido" else "Ok", type text),
+				    AlertaConversion = Table.AddColumn(AlertaCosto, "alerta_conversion",
+				        each if [#"UNID CONV"] = null or [#"UNID CONV"] <= 0 then "Inválido"
+				             else if Number.Abs([#"UNID CONV"] - 1) > TolConversion then "Revisar"
+				             else "Ok", type text),
+				
+				    // Duplicados (mismo SKU en el mismo periodo)
+				    EnMemoria = Table.Buffer(AlertaConversion),
+				    Conteo = Table.Group(Table.SelectRows(EnMemoria, each [CODIGO] <> null),
+				        {"periodo", "CODIGO"}, {{"n_sku", each Table.RowCount(_), Int64.Type}}),
+				    ConConteo = Table.NestedJoin(EnMemoria, {"periodo", "CODIGO"},
+				        Conteo, {"periodo", "CODIGO"}, "conteo", JoinKind.LeftOuter),
+				    Expandido = Table.ExpandTableColumn(ConConteo, "conteo", {"n_sku"}),
+				    Duplicado = Table.AddColumn(Expandido, "flag_duplicado",
+				        each [n_sku] <> null and [n_sku] > 1, type logical),
+				    SinConteo = Table.RemoveColumns(Duplicado, {"n_sku"}),
+				
+				    // Estado general
+				    Estado = Table.AddColumn(SinConteo, "estado_general",
+				        each if List.Contains({"Rojo", "Sin fecha", "FULCOM futura"}, [alerta_antiguedad])
+				                or [alerta_stock] <> "Ok" or [alerta_costo] <> "Ok"
+				                or [alerta_conversion] <> "Ok" or [flag_dif_valorizacion]
+				             then "REVISAR"
+				             else if [alerta_antiguedad] = "Ámbar" then "MONITOREAR"
+				             else "OK", type text),
+				    #"Filas filtradas" = Table.SelectRows(Estado, each true)
+				in
+				    #"Filas filtradas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,74 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 165
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 568,
+            "y": 86
+          },
+          "nodeIndex": "Parametros",
+          "nodeLineageTag": "b625cc5c-72c9-4f87-82f6-a9d8a6419d13",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 26
+          },
+          "nodeIndex": "dim_calendario",
+          "nodeLineageTag": "4866cce3-404c-49cb-a6ac-048e58d754e8",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 62
+          },
+          "nodeIndex": "fact_balanza",
+          "nodeLineageTag": "e6a4e13a-55cf-4e3f-9b16-c124cbccc17a",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 279.5,
+            "y": 280
+          },
+          "nodeIndex": "fact_kardex",
+          "nodeLineageTag": "2fa4d18f-a96c-4a12-94cf-d056e0ab40d6",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 80,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}
