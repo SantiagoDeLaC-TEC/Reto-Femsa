@@ -11,5 +11,9 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
+annotation PBI_QueryOrder = ["RutaSharePoint","CarpetaRaiz","Archivos_SharePoint","Parametros","Explorar_Kardex","ColumnasKardex","fnLeerKardex","Kardex_Origen","Validar_Kardex","Diagnostico_Kardex"]
+
+ref table Parametros
+
 ref cultureInfo es-ES
 

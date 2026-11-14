@@ -1,0 +1,123 @@
+expression RutaSharePoint = "https://tecmx.sharepoint.com/sites/FEMSA2" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 905ba9b5-a87d-4a65-a715-772ca212fc4a
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Text
+
+expression CarpetaRaiz = "Reto-FEMSA/" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: ab8531e8-2141-42f2-b25c-c19da4178a08
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Text
+
+expression Archivos_SharePoint =
+		let
+		    Origen = SharePoint.Files(RutaSharePoint, [ApiVersion = 15])
+		in
+		    Origen
+	lineageTag: 868c1b7a-f0f8-4894-b6f2-7b9a6f41515b
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
+expression Explorar_Kardex =
+		let
+		    Archivo = Table.SelectRows(Archivos_SharePoint, each
+		        [Name] = "kardex_2026-01.xlsx"){0}[Content],
+		    Libro = Excel.Workbook(Archivo, null, true),
+		    Hoja = Table.SelectRows(Libro, each
+		        [Kind] = "Sheet" and Text.Upper(Text.Trim([Name])) = "DETALLE KARDEX"){0}[Data],
+		    Encabezados = Table.PromoteHeaders(Hoja, [PromoteAllScalars = true])
+		in
+		    Encabezados
+	lineageTag: e0d9c013-5cfc-4e72-9433-290da4122a81
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
+expression ColumnasKardex =
+		let
+		    Origen = {"PERIODO", "CODIGO", "DESCRIPTOR", "STOCK", "COSTO", "VALORIZACION", "FULCOM", "UNID CONV", "LINEA", "NOMBRE LINEA", "POLITICA CJE AL 30SEP"}
+		in
+		    Origen
+	lineageTag: 44bab9d0-c462-4b48-9681-4c7af64f9550
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = List
+
+expression fnLeerKardex =
+		(archivo as binary) as table =>
+		let
+		    Libro = Excel.Workbook(archivo, null, true),
+		    Hojas = Table.SelectRows(Libro, each
+		        [Kind] = "Sheet" and Text.Upper(Text.Trim([Name])) = "DETALLE KARDEX"),
+		    Datos = if Table.IsEmpty(Hojas)
+		        then error "El archivo no tiene la hoja DETALLE KARDEX"
+		        else Hojas{0}[Data],
+		    Encabezados = Table.PromoteHeaders(Datos, [PromoteAllScalars = true]),
+		    Columnas = Table.SelectColumns(Encabezados, ColumnasKardex),
+		    EsVacio = (valor) => valor = null or Text.Trim(Text.From(valor)) = "",
+		    EsNumero = (valor) => (try Number.From(valor) otherwise null) <> null,
+		    SinBasura = Table.SelectRows(Columnas, each
+		        not (EsVacio([CODIGO]) and EsVacio([STOCK]) and not EsNumero([COSTO])))
+		in
+		    SinBasura
+	lineageTag: 58e02f6e-f1fa-4b2d-a026-60384dddf7fb
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Function
+
+expression Kardex_Origen =
+		let
+		    Archivos = Archivos_SharePoint,
+		    Kardex = Table.SelectRows(Archivos, each
+		        Text.EndsWith([Folder Path], "/" & CarpetaRaiz & "Kardex/")
+		        and Text.StartsWith([Name], "kardex_")
+		        and [Extension] = ".xlsx"),
+		    ConPeriodo = Table.AddColumn(Kardex, "periodo_archivo", each
+		        Date.EndOfMonth(Date.FromText(
+		            Text.BetweenDelimiters([Name], "kardex_", ".xlsx") & "-01",
+		            [Format = "yyyy-MM-dd"])), type date),
+		    Leidos = Table.AddColumn(ConPeriodo, "datos", each fnLeerKardex([Content])),
+		    Solo = Table.SelectColumns(Leidos, {"Name", "periodo_archivo", "datos"}),
+		    Renombrado = Table.RenameColumns(Solo, {{"Name", "archivo"}}),
+		    Expandido = Table.ExpandTableColumn(Renombrado, "datos", ColumnasKardex)
+		in
+		    Expandido
+	lineageTag: 54482b3d-8094-4ca7-a3f9-4443f2de07aa
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
+expression Validar_Kardex =
+		let
+		    Origen = Table.Group(Kardex_Origen, {"periodo_archivo"}, {
+		    {"filas", each Table.RowCount(_), Int64.Type},
+		    {"valorizacion", each List.Sum(List.Transform([VALORIZACION], each try Number.From(_) otherwise 0)), type number}})
+		in
+		    Origen
+	lineageTag: d0d9c435-f79c-40b1-ac92-dd4e7b2bfd74
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
+expression Diagnostico_Kardex =
+		let
+		    Origen = Table.SelectRows(Kardex_Origen, each [CODIGO
+		] = null or Text.Trim(Text.From([CODIGO])) = "")
+		in
+		    Origen
+	lineageTag: 2a72b298-5d90-4530-a6ae-efce3b0a6153
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

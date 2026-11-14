@@ -1,0 +1,40 @@
+table Parametros
+	lineageTag: b625cc5c-72c9-4f87-82f6-a9d8a6419d13
+
+	column parametro
+		dataType: string
+		lineageTag: e44f915e-34d2-4cfe-aedd-07fd94ed4a22
+		summarizeBy: none
+		sourceColumn: parametro
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor
+		dataType: string
+		lineageTag: 7cf9c04d-b405-4ee7-8b6a-8aa3f5f1e08a
+		summarizeBy: none
+		sourceColumn: valor
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parametros = m
+		mode: import
+		source =
+				let
+				    Archivos = Archivos_SharePoint,
+				    Archivo = Table.SelectRows(Archivos, each
+				        Text.EndsWith([Folder Path], "/" & CarpetaRaiz & "Parametros/")
+				        and [Name] = "Parametros.xlsx"),
+				    Contenido = if Table.RowCount(Archivo) <> 1
+				        then error "Se esperaba exactamente un archivo Parametros.xlsx"
+				        else Archivo{0}[Content],
+				    Libro = Excel.Workbook(Contenido, null, true),
+				    Tabla = Libro{[Item = "Parametros", Kind = "Table"]}[Data],
+				    Limpia = Table.SelectColumns(Tabla, {"parametro", "valor"})
+				in
+				    Limpia
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
