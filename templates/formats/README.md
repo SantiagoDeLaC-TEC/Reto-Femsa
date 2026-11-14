@@ -1,0 +1,1 @@
+Archivos de Kardex, balanza y tipo de cambio solo con encabezados, para comparar contra los archivos nuevos antes de subirlos. Nunca con datos reales.

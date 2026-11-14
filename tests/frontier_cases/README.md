@@ -1,0 +1,1 @@
+Datos inventados para probar las reglas: antigüedad de 90, 91, 180 y 181 días; conversión 0, 0.5, 1 y 1.0000001; diferencias de $0.99 y $1.01; FULCOM futura y nula.

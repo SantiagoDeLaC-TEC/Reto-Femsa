@@ -1,0 +1,1 @@
+Versiones iniciales de los archivos de configuración. La versión válida de Parametros.xlsx es la que está en SharePoint; si cambia un umbral allá, actualizar esta copia.
