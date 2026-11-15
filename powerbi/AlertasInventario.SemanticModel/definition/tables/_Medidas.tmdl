@@ -379,6 +379,164 @@ table _Medidas
 		displayFolder: 4 Semáforo
 		lineageTag: 73366849-c2bf-4805-a36b-c822f35758a8
 
+	measure '% Valor por Alerta' =
+			
+			DIVIDE ( [Valorizacion Kardex], CALCULATE ( [Valorizacion Kardex], REMOVEFILTERS ( dim_alerta ) ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: d35b28b7-5348-4f8b-8006-429e860f5d15
+
+	measure 'Valor Rojo' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_antiguedad] = "Rojo" )
+		formatString: #,0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 9a8743a3-47c9-4c95-a98c-310738873817
+
+	measure '% Valor Rojo' = DIVIDE ( [Valor Rojo], [Valorizacion Kardex] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: b91ca2c1-2ef4-4647-a648-ad2a2ade4ead
+
+	measure 'Valor Ambar' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_antiguedad] = "Ámbar" )
+		formatString: #,0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 810f2e10-cae4-4909-9f18-3cd7e78540e5
+
+	measure '% Valor Ambar' = DIVIDE ( [Valor Ambar], [Valorizacion Kardex] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 02da1b0a-b0a2-45e6-9448-217ed8392606
+
+	measure 'Antiguedad Ponderada' =
+			
+			VAR registros =
+			    FILTER ( fact_kardex,
+			        NOT ISBLANK ( fact_kardex[dias_antiguedad] ) && fact_kardex[VALORIZACION] > 0 )
+			RETURN
+			    DIVIDE (
+			        SUMX ( registros, fact_kardex[dias_antiguedad] * fact_kardex[VALORIZACION] ),
+			        SUMX ( registros, fact_kardex[VALORIZACION] )
+			    )
+		formatString: 0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 99afac50-b34a-46b8-ae43-34653ad519fc
+
+	measure 'Valor Recuperable Canje' =
+			
+			CALCULATE ( [Valorizacion Kardex],
+			    fact_kardex[POLITICA CJE AL 30SEP] = "P1",
+			    fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
+		formatString: #,0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 3bff8de5-1393-4f84-ae62-71c375b482ea
+
+	measure 'Registros Recuperable Canje' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ),
+			    fact_kardex[POLITICA CJE AL 30SEP] = "P1",
+			    fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
+		formatString: 0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 17de5fcd-2852-4697-96d8-aa9d22f20347
+
+	measure 'Registros Proximo Rojo' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_proximo_rojo] = TRUE () )
+		formatString: 0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 6bba4779-1d9c-4576-8316-9aa71c249f3a
+
+	measure 'Valor Proximo Rojo' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_proximo_rojo] = TRUE () )
+		formatString: #,0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: b4f6ea8c-90d1-4e90-aaa7-b9288e2a26ef
+
+	measure 'Registros Migro Rojo' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_migro_a_rojo] = TRUE () )
+		formatString: 0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 1f8340e9-c98c-41b1-aaaf-42056a442e02
+
+	measure 'Valor Migro Rojo' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_migro_a_rojo] = TRUE () )
+		formatString: #,0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 13c296ed-3880-4f09-a101-7c34bdd0bf90
+
+	measure 'Pareto % Acumulado' =
+			
+			VAR actual = [Valor Rojo]
+			VAR total = CALCULATE ( [Valor Rojo], REMOVEFILTERS ( dim_producto[CODIGO] ) )
+			VAR tabla = ADDCOLUMNS ( ALL ( dim_producto[CODIGO] ), "@valor", [Valor Rojo] )
+			VAR acumulado = SUMX ( FILTER ( tabla, [@valor] >= actual ), [@valor] )
+			RETURN
+			    IF ( ISBLANK ( actual ), BLANK (), DIVIDE ( acumulado, total ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 32a838a9-4e6b-43fb-8431-3166b1a44626
+
+	measure 'SKU Pareto' =
+			
+			COUNTROWS (
+			    FILTER (
+			        ADDCOLUMNS ( VALUES ( dim_producto[CODIGO] ), "@acum", [Pareto % Acumulado] ),
+			        NOT ISBLANK ( [@acum] ) && [@acum] <= [Pareto Pct]
+			    )
+			)
+		formatString: 0
+		displayFolder: 6 Antigüedad y Canje
+		lineageTag: 3525c9ef-960b-4a22-afd5-9be00b9b61d8
+
+	measure 'Saldo Balanza Mes Anterior' =
+			
+			VAR m = MAX ( dim_calendario[idx_mes] )
+			RETURN
+			    CALCULATE ( [Saldo Balanza], REMOVEFILTERS ( dim_calendario ), dim_calendario[idx_mes] = m - 1 )
+		formatString: #,0
+		displayFolder: 7 Variación
+		lineageTag: bb0fcfd2-2f04-4ab2-bda4-8f78fa1f612e
+
+	measure 'Variacion Balanza CLP' =
+			
+			IF ( MAX ( dim_calendario[idx_mes] ) = 1, BLANK (),
+			    [Saldo Balanza] - [Saldo Balanza Mes Anterior] )
+		formatString: #,0
+		displayFolder: 7 Variación
+		lineageTag: 682b6172-7337-4101-863c-286eaae8a251
+
+	measure 'Variacion Balanza %' =
+			
+			DIVIDE ( [Variacion Balanza CLP], ABS ( [Saldo Balanza Mes Anterior] ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 7 Variación
+		lineageTag: 06206b5a-a90f-4ae0-960d-c69baaeb5b4b
+
+	measure 'Eval Variacion Balanza' =
+			
+			IF ( MAX ( dim_calendario[idx_mes] ) = 1, "Sin mes anterior",
+			    IF ( ABS ( [Variacion Balanza %] ) >= [Umbral Variacion], "Revisar", "Ok" ) )
+		displayFolder: 7 Variación
+		lineageTag: dacc4bea-1bb5-4542-900a-437c3d0cc900
+
+	measure 'Contribucion %' =
+			
+			DIVIDE ( [Variacion CLP], CALCULATE ( [Variacion CLP], REMOVEFILTERS ( dim_producto[CODIGO] ) ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 7 Variación
+		lineageTag: f130def9-4c9a-43be-94f6-880fb4ca1514
+
+	measure 'Variacion CLP Absoluta' = ABS ( [Variacion CLP] )
+		formatString: #,0
+		displayFolder: 7 Variación
+		lineageTag: ac4fa4cc-8b70-40f3-a5b8-e2b4bcc8e44e
+
 	partition _Medidas = m
 		mode: import
 		source =
