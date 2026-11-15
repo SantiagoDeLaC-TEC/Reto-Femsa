@@ -35,7 +35,7 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["RutaSharePoint","CarpetaRaiz","Archivos_SharePoint","Parametros","ColumnasKardex","fnLeerKardex","fnLeerBalanza","Kardex_Origen","Balanza_Origen","Validar_Kardex","Kardex_Limpio","fact_balanza","TipoCambio","dim_calendario","fact_kardex","Validar_Producto","dim_alerta","Moneda","_Medidas"]
+annotation PBI_QueryOrder = ["RutaSharePoint","CarpetaRaiz","Archivos_SharePoint","Parametros","ColumnasKardex","fnLeerKardex","fnLeerBalanza","Kardex_Origen","Balanza_Origen","Validar_Kardex","Kardex_Limpio","fact_balanza","TipoCambio","dim_calendario","fact_kardex","Validar_Producto","dim_alerta","Moneda","_Medidas","dim_criterio"]
 
 ref table Parametros
 ref table fact_balanza
@@ -48,6 +48,7 @@ ref table dim_producto
 ref table dim_alerta
 ref table Moneda
 ref table _Medidas
+ref table dim_criterio
 
 ref cultureInfo es-ES
 

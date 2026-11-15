@@ -272,6 +272,113 @@ table _Medidas
 		displayFolder: 3 Criterios
 		lineageTag: ac67f044-2bf9-4444-9d4d-d7c6a51de348
 
+	measure 'SKU Unicos' = DISTINCTCOUNTNOBLANK ( fact_kardex[CODIGO] )
+		formatString: 0
+		displayFolder: 5 SKU
+		lineageTag: 41e50650-9b3b-46ca-bb1b-d028ebac8755
+
+	measure 'SKU Unicos Mes Anterior' =
+			
+			VAR m = MAX ( dim_calendario[idx_mes] )
+			RETURN
+			    CALCULATE ( [SKU Unicos], REMOVEFILTERS ( dim_calendario ), dim_calendario[idx_mes] = m - 1 )
+		formatString: 0
+		displayFolder: 5 SKU
+		lineageTag: b0ad88d0-9fc0-4c23-9187-cf9e4c2ac65c
+
+	measure 'Variacion SKU' =
+			
+			IF ( MAX ( dim_calendario[idx_mes] ) = 1, BLANK (), [SKU Unicos] - [SKU Unicos Mes Anterior] )
+		formatString: 0
+		displayFolder: 5 SKU
+		lineageTag: 17188bd0-bc59-472a-8c59-ecd3b67d4ea7
+
+	measure 'SKU Nuevos' =
+			
+			CALCULATE ( DISTINCTCOUNTNOBLANK ( fact_kardex[CODIGO] ), fact_kardex[flag_sku_nuevo] = TRUE () )
+		formatString: 0
+		displayFolder: 5 SKU
+		lineageTag: 3a6e2c4c-3c99-4ba0-885e-b297fc9f502d
+
+	measure 'SKU Salieron' =
+			
+			VAR m = MAX ( dim_calendario[idx_mes] )
+			VAR actuales = VALUES ( fact_kardex[CODIGO] )
+			VAR anteriores =
+			    CALCULATETABLE ( VALUES ( fact_kardex[CODIGO] ),
+			        REMOVEFILTERS ( dim_calendario ), dim_calendario[idx_mes] = m - 1 )
+			RETURN
+			    IF ( m = 1, BLANK (), COUNTROWS ( EXCEPT ( anteriores, actuales ) ) )
+		formatString: 0
+		displayFolder: 5 SKU
+		lineageTag: 576134c0-ae41-46cd-b2f4-f8b76b59c755
+
+	measure 'Criterio Evaluacion' =
+			
+			SWITCH (
+			    SELECTEDVALUE ( dim_criterio[orden] ),
+			    1, [Eval Conciliacion],
+			    2, [Eval Variacion],
+			    3, [Eval Antiguedad],
+			    4, [Eval FULCOM Futura],
+			    5, [Eval Conversion],
+			    6, [Eval Valorizacion],
+			    7, [Eval Duplicados],
+			    8, [Eval P0 Envejecidos],
+			    9, [Eval Errores Datos]
+			)
+		displayFolder: 4 Semáforo
+		lineageTag: 4ecbac20-032e-460e-9903-c697fa53c974
+
+	measure 'Criterio Registros' =
+			
+			SWITCH (
+			    SELECTEDVALUE ( dim_criterio[orden] ),
+			    3, [Registros Antiguedad],
+			    4, [Registros FULCOM Futura],
+			    5, [Registros Conversion],
+			    6, [Registros Dif Valorizacion],
+			    7, [Registros Duplicados],
+			    8, [Registros P0 Envejecidos],
+			    9, [Registros Errores Datos]
+			)
+		formatString: 0
+		displayFolder: 4 Semáforo
+		lineageTag: 719591c8-b575-4e13-906c-e0635aec001b
+
+	measure 'Criterio Valor' =
+			
+			SWITCH (
+			    SELECTEDVALUE ( dim_criterio[orden] ),
+			    1, [Diferencia],
+			    2, [Variacion CLP],
+			    3, [Valor Antiguedad],
+			    4, [Valor FULCOM Futura],
+			    5, [Valor Conversion],
+			    6, [Valor Dif Valorizacion],
+			    7, [Valor Duplicados],
+			    8, [Valor P0 Envejecidos],
+			    9, [Valor Errores Datos]
+			)
+		formatString: #,0
+		displayFolder: 4 Semáforo
+		lineageTag: f9deff74-827b-45a8-90d2-8f70fb55ec3c
+
+	measure 'Criterio Nivel' =
+			
+			VAR e = [Criterio Evaluacion]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        e IN { "Ok", "Correcto", "Alineado", "Conciliado" }, 0,
+			        e IN { "Revisar", "No alineado", "Corregir" }, 1,
+			        e IN { "Crítico", "Riesgo alto", "No conciliado", "Sin balanza" }, 2,
+			        BLANK ()
+			    )
+		formatString: 0
+		displayFolder: 4 Semáforo
+		lineageTag: 73366849-c2bf-4805-a36b-c822f35758a8
+
 	partition _Medidas = m
 		mode: import
 		source =

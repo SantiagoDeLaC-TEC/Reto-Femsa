@@ -1,0 +1,34 @@
+table dim_criterio
+	lineageTag: 42d2365b-0bbb-4179-806e-c80230d6763a
+
+	column orden
+		dataType: int64
+		formatString: 0
+		lineageTag: cf688f01-65fe-40fa-8ce5-4f2d6d01bc7a
+		summarizeBy: sum
+		sourceColumn: orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column criterio
+		dataType: string
+		lineageTag: 99b390f7-ded9-4460-9977-9bf19e748863
+		summarizeBy: none
+		sourceColumn: criterio
+		sortByColumn: orden
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_criterio = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("Ncw7DsIwEEXRrViuI8T/U5IADSBooIlSjOIBGRkbjeMIZVu0dNkYE0e05+q9PJcjmcg9kMK3qP1ApGDANiCLJJdjTlcgDaVuP1Y80foAJqYJp7Wt9L39ogIVbcq2uxyy01HcQhUIfOQZc+ZsjeS7m2jz+Gwc6aY/j7pg3YSX0SUo14+XTOehQJ4/sNR/XjFviRyhFwqFgqoLxQ8=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [orden = _t, criterio = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"orden", Int64.Type}, {"criterio", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_ResultType = Table
+

@@ -49,6 +49,9 @@ table dim_calendario
 		lineageTag: 70173eae-ad47-443e-ab0c-be9bcb83cf4e
 		summarizeBy: none
 		sourceColumn: nombre_mes
+		sortByColumn: idx_mes
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 
