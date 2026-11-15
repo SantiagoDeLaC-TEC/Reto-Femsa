@@ -17,6 +17,16 @@ table Parametros
 
 		annotation SummarizationSetBy = Automatic
 
+	column valor_num
+		dataType: double
+		lineageTag: 2e79a8ab-a54b-42dd-a5f1-f630b60f58dd
+		summarizeBy: sum
+		sourceColumn: valor_num
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition Parametros = m
 		mode: import
 		queryGroup: 00_Parametros
@@ -31,9 +41,11 @@ table Parametros
 				        else Archivo{0}[Content],
 				    Libro = Excel.Workbook(Contenido, null, true),
 				    Tabla = Libro{[Item = "Parametros", Kind = "Table"]}[Data],
-				    Limpia = Table.SelectColumns(Tabla, {"parametro", "valor"})
+				    Limpia = Table.SelectColumns(Tabla, {"parametro", "valor"}),
+				    #"Personalizada agregada" = Table.AddColumn(Limpia, "valor_num", each try Number.From([valor]) otherwise null),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Personalizada agregada",{{"valor_num", type number}})
 				in
-				    Limpia
+				    #"Tipo cambiado"
 
 	annotation PBI_NavigationStepName = Navegación
 

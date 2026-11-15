@@ -1,22 +1,77 @@
 table _Medidas
 	lineageTag: b2d58dc1-3dd8-4afe-94ba-36812cb752ff
 
-	column Columna1
-		dataType: string
-		lineageTag: 2b6091d1-0c3b-4263-a43c-cff92ac245f2
-		summarizeBy: none
-		sourceColumn: Columna1
+	measure 'Tol Conciliacion' =
+			
+			CALCULATE ( MAX ( Parametros[valor_num] ), Parametros[parametro] = "tol_conciliacion" )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 1 Parámetros
+		lineageTag: 0ae5c215-d62d-482f-8359-94a2bf465873
 
-		annotation SummarizationSetBy = Automatic
+	measure 'Umbral Variacion' =
+			
+			CALCULATE ( MAX ( Parametros[valor_num] ), Parametros[parametro] = "umbral_variacion" )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 1 Parámetros
+		lineageTag: c33df251-174e-4951-86ed-4b50053b743a
+
+	measure 'Pareto Pct' =
+			
+			CALCULATE ( MAX ( Parametros[valor_num] ), Parametros[parametro] = "pareto_pct" )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 1 Parámetros
+		lineageTag: e2c2762d-37f2-4577-895b-af57da09757c
+
+	measure 'Valorizacion Kardex' = SUM ( fact_kardex[VALORIZACION] )
+		formatString: #,0
+		displayFolder: 2 Conciliación
+		lineageTag: 29a27649-ba05-406a-9359-e238b90ffa50
+
+	measure 'Valorizacion Kardex Total' =
+			
+			CALCULATE (
+			    [Valorizacion Kardex],
+			    REMOVEFILTERS ( fact_kardex ),
+			    VALUES ( dim_calendario[periodo] )
+			)
+		formatString: #,0
+		displayFolder: 2 Conciliación
+		lineageTag: 1e13bff4-0362-4756-baa6-977ceb642e0d
+
+	measure 'Saldo Balanza' = SUM ( fact_balanza[saldo] )
+		formatString: #,0
+		displayFolder: 2 Conciliación
+		lineageTag: 78c226ca-99e1-4a0c-b197-e30f89132d1d
+
+	measure Diferencia = [Valorizacion Kardex Total] - [Saldo Balanza]
+		formatString: #,0
+		displayFolder: 2 Conciliación
+		lineageTag: f5324832-b2ff-4aac-84af-14703c2415a6
+
+	measure 'Diferencia %' = DIVIDE ( [Diferencia], ABS ( [Saldo Balanza] ) )
+		formatString: 0.000%;-0.000%;0.000%
+		displayFolder: 2 Conciliación
+		lineageTag: 804d3883-5195-44b8-9c36-805cf2d4a413
+
+	measure 'Estado Conciliacion' =
+			
+			IF (
+			    ISBLANK ( [Saldo Balanza] ),
+			    "Sin balanza",
+			    IF ( ABS ( [Diferencia %] ) <= [Tol Conciliacion], "Conciliado", "No conciliado" )
+			)
+		displayFolder: 2 Conciliación
+		lineageTag: 26afe593-06ae-409e-90fa-f94902c0de50
 
 	partition _Medidas = m
 		mode: import
 		source =
 				let
 				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Columna1 = _t]),
-				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"Columna1", type text}})
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"Columna1", type text}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Columna1"})
 				in
-				    #"Tipo cambiado"
+				    #"Columnas quitadas"
 
 	annotation PBI_ResultType = Table
 
