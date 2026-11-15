@@ -63,6 +63,215 @@ table _Medidas
 		displayFolder: 2 Conciliación
 		lineageTag: 26afe593-06ae-409e-90fa-f94902c0de50
 
+	measure 'Eval Conciliacion' = [Estado Conciliacion]
+		displayFolder: 3 Criterios
+		lineageTag: 957e0070-1383-4940-8ca6-85cb8b7d0f26
+
+	measure 'Registros Antiguedad' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 6e016022-ec84-41c3-a6d2-2a8167c664c0
+
+	measure 'Valor Antiguedad' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: aa8779ab-087f-4ed5-861b-d24b4d332fb8
+
+	measure 'Eval Antiguedad' = IF ( [Registros Antiguedad] > 0, "No alineado", "Alineado" )
+		displayFolder: 3 Criterios
+		lineageTag: 47d6931e-ff8b-4e69-9ffe-9029cc7869c4
+
+	measure 'Registros FULCOM Futura' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_fulcom_futura] = TRUE () )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 7a2721b9-dafa-42cf-b9ea-66d446868a8e
+
+	measure 'Valor FULCOM Futura' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_fulcom_futura] = TRUE () )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: f3214146-f5ce-4e54-b1cf-19549c9c9a33
+
+	measure 'Eval FULCOM Futura' = IF ( [Registros FULCOM Futura] > 0, "Crítico", "Correcto" )
+		displayFolder: 3 Criterios
+		lineageTag: ef8739fb-3f3b-4bbf-a2db-78990490f89a
+
+	measure 'Registros Conversion' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" } )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: cf54be9e-1933-49cd-a9ac-94112b3018ef
+
+	measure 'Valor Conversion' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" } )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: 120b2d50-ae8f-441c-a1ad-07474d5f745f
+
+	measure 'Eval Conversion' = IF ( [Registros Conversion] > 0, "Revisar", "Ok" )
+		displayFolder: 3 Criterios
+		lineageTag: b1a2a40b-639c-4ab9-9855-5b9358b8148e
+
+	measure 'Registros Dif Valorizacion' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_dif_valorizacion] = TRUE () )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: c59a5db0-5b06-4446-a5cb-5a265c76ef7c
+
+	measure 'Valor Dif Valorizacion' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_dif_valorizacion] = TRUE () )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: 44a17ce6-7690-4e09-9438-6b1b61bda42a
+
+	measure 'Eval Valorizacion' = IF ( [Registros Dif Valorizacion] > 0, "Revisar", "Ok" )
+		displayFolder: 3 Criterios
+		lineageTag: 1d2263ca-c441-4c4b-b1e9-0bda6c35aed8
+
+	measure 'Registros Duplicados' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_duplicado] = TRUE () )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 61b46bb7-26c9-4899-b15d-2e84e4a46afa
+
+	measure 'Valor Duplicados' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_duplicado] = TRUE () )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: 088f660a-2afd-4e7e-a2d4-63418ac15a1b
+
+	measure 'Eval Duplicados' = IF ( [Registros Duplicados] > 0, "Revisar", "Ok" )
+		displayFolder: 3 Criterios
+		lineageTag: 97e00318-b5f5-49d5-9c80-de60fe284416
+
+	measure 'Registros P0 Rojo' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ),
+			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Rojo" )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 19613a9d-811c-465d-b870-7598804f2dcf
+
+	measure 'Registros P0 Ambar' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ),
+			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Ámbar" )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 8072bb83-3eb1-4634-8a48-5398f022ed29
+
+	measure 'Valor P0 Rojo' =
+			
+			CALCULATE ( [Valorizacion Kardex],
+			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Rojo" )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: 72878d95-bac7-4a82-9005-2c482400b1f3
+
+	measure 'Valor P0 Ambar' =
+			
+			CALCULATE ( [Valorizacion Kardex],
+			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Ámbar" )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: a3b6b39d-1bf6-4061-a373-c67bc9d50d76
+
+	measure 'Registros P0 Envejecidos' = [Registros P0 Rojo] + [Registros P0 Ambar]
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 2b0bc5c9-5022-4e19-bc79-c4e579747883
+
+	measure 'Valor P0 Envejecidos' = [Valor P0 Rojo] + [Valor P0 Ambar]
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: cafb1f89-f914-4b3b-8cec-346c2b1ed427
+
+	measure 'Eval P0 Envejecidos' =
+			
+			SWITCH (
+			    TRUE (),
+			    [Registros P0 Rojo] > 0, "Riesgo alto",
+			    [Registros P0 Ambar] > 0, "Revisar",
+			    "Ok"
+			)
+		displayFolder: 3 Criterios
+		lineageTag: be0f7fde-c271-4275-a50e-616ed6e78117
+
+	measure 'Registros Errores Datos' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[tiene_nulos] = TRUE () )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 83eafe37-665e-4088-8696-28bd84b08c27
+
+	measure 'Valor Errores Datos' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[tiene_nulos] = TRUE () )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: 307d6817-7be2-4aa3-9052-3e63b3af41e2
+
+	measure 'Eval Errores Datos' = IF ( [Registros Errores Datos] > 0, "Corregir", "Ok" )
+		displayFolder: 3 Criterios
+		lineageTag: e80f493c-e6c6-4502-aba6-d8571ab04f84
+
+	measure 'Valorizacion Mes Anterior' =
+			
+			VAR m = MAX ( dim_calendario[idx_mes] )
+			RETURN
+			    CALCULATE ( [Valorizacion Kardex],
+			        REMOVEFILTERS ( dim_calendario ), dim_calendario[idx_mes] = m - 1 )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: b0cd70a1-65a8-449b-bdd7-56b118bde56d
+
+	measure 'Variacion CLP' =
+			
+			IF ( MAX ( dim_calendario[idx_mes] ) = 1, BLANK (),
+			    [Valorizacion Kardex] - [Valorizacion Mes Anterior] )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: 8f5fd6fa-e0ab-48b8-82e7-2f1d2a354128
+
+	measure 'Variacion %' = DIVIDE ( [Variacion CLP], ABS ( [Valorizacion Mes Anterior] ) )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 3 Criterios
+		lineageTag: 9f3785d2-320d-4126-bb6d-9a503ea595a1
+
+	measure 'Eval Variacion' =
+			
+			IF ( MAX ( dim_calendario[idx_mes] ) = 1, "Sin mes anterior",
+			    IF ( ABS ( [Variacion %] ) >= [Umbral Variacion], "Revisar", "Ok" ) )
+		displayFolder: 3 Criterios
+		lineageTag: 7f1d827e-66ed-4b28-82f2-ce3fd625729a
+
+	measure 'Registros Revisar' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[estado_general] = "REVISAR" )
+		formatString: 0
+		displayFolder: 3 Criterios
+		lineageTag: 99a74334-62aa-450d-a878-dccc4b5bc65e
+
+	measure 'Valor Revisar' =
+			
+			CALCULATE ( [Valorizacion Kardex], fact_kardex[estado_general] = "REVISAR" )
+		formatString: #,0
+		displayFolder: 3 Criterios
+		lineageTag: ac67f044-2bf9-4444-9d4d-d7c6a51de348
+
 	partition _Medidas = m
 		mode: import
 		source =
