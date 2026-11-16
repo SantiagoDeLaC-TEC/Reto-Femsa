@@ -875,6 +875,108 @@ table _Medidas
 		displayFolder: 10 Control
 		lineageTag: 1ac53828-cad5-4ea9-8893-4aeb1768e334
 
+	measure 'Color Verde' = "#2E8B57"
+		displayFolder: 11 Apoyo Visual
+		lineageTag: ec53f3c9-15d6-43bc-8855-ace878e61a70
+
+	measure 'Color Ambar' = "#E69F00"
+		displayFolder: 11 Apoyo Visual
+		lineageTag: b4cfc9d8-d5be-41a4-acf6-88184f8b105e
+
+	measure 'Color Rojo' = "#C0392B"
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 6a5d6d90-f296-4d0b-8b10-d7f64597406d
+
+	measure 'Color Gris' = "#7F7F7F"
+		displayFolder: 11 Apoyo Visual
+		lineageTag: ba72a985-c676-48f3-98c0-d37c00ea14fb
+
+	measure 'Color Conciliacion' =
+			
+			SWITCH ( [Estado Conciliacion],
+			    "Conciliado", [Color Verde],
+			    "No conciliado", [Color Rojo],
+			    [Color Gris] )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: d6feef3a-a7b0-4305-bf70-0517cb28ea95
+
+	measure 'Color Nivel' =
+			
+			SWITCH ( [Criterio Nivel],
+			    0, [Color Verde],
+			    1, [Color Ambar],
+			    2, [Color Rojo],
+			    [Color Gris] )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 8937a73e-ad0e-42ef-8ce6-0892df499b1c
+
+	measure 'Color Alerta' = SELECTEDVALUE ( dim_alerta[color], [Color Gris] )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 33d73f23-045d-41f4-ac80-10d07758e30c
+
+	measure 'Color Refresco' = IF ( [Refresco Valido] = "Sí", [Color Verde], [Color Rojo] )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 4b55f2fc-844b-4d3a-9644-4071197072ca
+
+	measure 'Titulo Periodo' =
+			
+			"Cierre de " & SELECTEDVALUE ( dim_calendario[nombre_mes], "varios meses" )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 6c3b8fb2-cde8-4ffe-a2ff-57ce660fb0e2
+
+	measure 'Texto Moneda' = "Montos en " & [Moneda Seleccionada]
+		displayFolder: 11 Apoyo Visual
+		lineageTag: c4c1bb48-5df3-49ed-a4f6-cdd586220d36
+
+	measure 'Subtitulo Conciliacion' =
+			
+			"Inventario total; no aplica filtros de línea, política ni alerta"
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 8b8fda63-915c-4c48-842b-c6d80b6b679e
+
+	measure 'Texto Filtros' =
+			
+			VAR lineas =
+			    IF ( ISFILTERED ( dim_producto[LINEA] ),
+			        CONCATENATEX ( VALUES ( dim_producto[LINEA] ), dim_producto[LINEA], ", " ),
+			        "Todas" )
+			VAR politicas =
+			    IF ( ISFILTERED ( dim_producto[POLITICA CJE AL 30SEP] ),
+			        CONCATENATEX ( VALUES ( dim_producto[POLITICA CJE AL 30SEP] ),
+			            dim_producto[POLITICA CJE AL 30SEP], ", " ),
+			        "Todas" )
+			RETURN
+			    "Línea: " & lineas & " · Política: " & politicas
+		displayFolder: 11 Apoyo Visual
+		lineageTag: d2451251-2927-4662-b0c2-0e8c28d97e59
+
+	measure 'Texto Variacion Valorizacion' =
+			
+			IF ( MAX ( dim_calendario[idx_mes] ) = 1, "Sin mes anterior",
+			    FORMAT ( [Variacion %], "+0.0%;-0.0%;0.0%" ) & " vs. mes anterior" )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 6a17267f-a86d-47a5-b62e-457643218dd2
+
+	measure 'Texto Variacion SKU' =
+			
+			IF ( MAX ( dim_calendario[idx_mes] ) = 1, "Sin mes anterior",
+			    FORMAT ( [Variacion SKU], "+#,0;-#,0;0" ) & " vs. mes anterior" )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 58204a6b-96e8-4af8-be0b-a8e984a3b500
+
+	measure 'Texto Pareto' =
+			
+			FORMAT ( [SKU Pareto], "#,0" ) & " SKU concentran el "
+			    & FORMAT ( [Pareto Pct], "0%" ) & " del valor en Rojo"
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 132945a5-3b32-44b0-964d-f2c89f37a723
+
+	measure 'Texto Refresco' =
+			
+			IF ( [Refresco Valido] = "Sí", "Datos validados", "Revisar página de control" )
+		displayFolder: 11 Apoyo Visual
+		lineageTag: 1cc41e61-596f-43bc-9f4d-5b461ee59119
+
 	partition _Medidas = m
 		mode: import
 		source =
