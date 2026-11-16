@@ -5,26 +5,26 @@ table _Medidas
 			
 			CALCULATE ( MAX ( Parametros[valor_num] ), Parametros[parametro] = "tol_conciliacion" )
 		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: 1 Parámetros
+		displayFolder: 01 Parámetros
 		lineageTag: 0ae5c215-d62d-482f-8359-94a2bf465873
 
 	measure 'Umbral Variacion' =
 			
 			CALCULATE ( MAX ( Parametros[valor_num] ), Parametros[parametro] = "umbral_variacion" )
 		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: 1 Parámetros
+		displayFolder: 01 Parámetros
 		lineageTag: c33df251-174e-4951-86ed-4b50053b743a
 
 	measure 'Pareto Pct' =
 			
 			CALCULATE ( MAX ( Parametros[valor_num] ), Parametros[parametro] = "pareto_pct" )
 		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: 1 Parámetros
+		displayFolder: 01 Parámetros
 		lineageTag: e2c2762d-37f2-4577-895b-af57da09757c
 
 	measure 'Valorizacion Kardex' = SUM ( fact_kardex[VALORIZACION] )
 		formatString: #,0
-		displayFolder: 2 Conciliación
+		displayFolder: 02 Conciliación
 		lineageTag: 29a27649-ba05-406a-9359-e238b90ffa50
 
 	measure 'Valorizacion Kardex Total' =
@@ -35,22 +35,22 @@ table _Medidas
 			    VALUES ( dim_calendario[periodo] )
 			)
 		formatString: #,0
-		displayFolder: 2 Conciliación
+		displayFolder: 02 Conciliación
 		lineageTag: 1e13bff4-0362-4756-baa6-977ceb642e0d
 
 	measure 'Saldo Balanza' = SUM ( fact_balanza[saldo] )
 		formatString: #,0
-		displayFolder: 2 Conciliación
+		displayFolder: 02 Conciliación
 		lineageTag: 78c226ca-99e1-4a0c-b197-e30f89132d1d
 
 	measure Diferencia = [Valorizacion Kardex Total] - [Saldo Balanza]
 		formatString: #,0
-		displayFolder: 2 Conciliación
+		displayFolder: 02 Conciliación
 		lineageTag: f5324832-b2ff-4aac-84af-14703c2415a6
 
 	measure 'Diferencia %' = DIVIDE ( [Diferencia], ABS ( [Saldo Balanza] ) )
 		formatString: 0.000%;-0.000%;0.000%
-		displayFolder: 2 Conciliación
+		displayFolder: 02 Conciliación
 		lineageTag: 804d3883-5195-44b8-9c36-805cf2d4a413
 
 	measure 'Estado Conciliacion' =
@@ -60,101 +60,101 @@ table _Medidas
 			    "Sin balanza",
 			    IF ( ABS ( [Diferencia %] ) <= [Tol Conciliacion], "Conciliado", "No conciliado" )
 			)
-		displayFolder: 2 Conciliación
+		displayFolder: 02 Conciliación
 		lineageTag: 26afe593-06ae-409e-90fa-f94902c0de50
 
 	measure 'Eval Conciliacion' = [Estado Conciliacion]
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 957e0070-1383-4940-8ca6-85cb8b7d0f26
 
 	measure 'Registros Antiguedad' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 6e016022-ec84-41c3-a6d2-2a8167c664c0
 
 	measure 'Valor Antiguedad' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: aa8779ab-087f-4ed5-861b-d24b4d332fb8
 
 	measure 'Eval Antiguedad' = IF ( [Registros Antiguedad] > 0, "No alineado", "Alineado" )
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 47d6931e-ff8b-4e69-9ffe-9029cc7869c4
 
 	measure 'Registros FULCOM Futura' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_fulcom_futura] = TRUE () )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 7a2721b9-dafa-42cf-b9ea-66d446868a8e
 
 	measure 'Valor FULCOM Futura' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_fulcom_futura] = TRUE () )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: f3214146-f5ce-4e54-b1cf-19549c9c9a33
 
 	measure 'Eval FULCOM Futura' = IF ( [Registros FULCOM Futura] > 0, "Crítico", "Correcto" )
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: ef8739fb-3f3b-4bbf-a2db-78990490f89a
 
 	measure 'Registros Conversion' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" } )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: cf54be9e-1933-49cd-a9ac-94112b3018ef
 
 	measure 'Valor Conversion' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" } )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 120b2d50-ae8f-441c-a1ad-07474d5f745f
 
 	measure 'Eval Conversion' = IF ( [Registros Conversion] > 0, "Revisar", "Ok" )
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: b1a2a40b-639c-4ab9-9855-5b9358b8148e
 
 	measure 'Registros Dif Valorizacion' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_dif_valorizacion] = TRUE () )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: c59a5db0-5b06-4446-a5cb-5a265c76ef7c
 
 	measure 'Valor Dif Valorizacion' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_dif_valorizacion] = TRUE () )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 44a17ce6-7690-4e09-9438-6b1b61bda42a
 
 	measure 'Eval Valorizacion' = IF ( [Registros Dif Valorizacion] > 0, "Revisar", "Ok" )
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 1d2263ca-c441-4c4b-b1e9-0bda6c35aed8
 
 	measure 'Registros Duplicados' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_duplicado] = TRUE () )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 61b46bb7-26c9-4899-b15d-2e84e4a46afa
 
 	measure 'Valor Duplicados' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_duplicado] = TRUE () )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 088f660a-2afd-4e7e-a2d4-63418ac15a1b
 
 	measure 'Eval Duplicados' = IF ( [Registros Duplicados] > 0, "Revisar", "Ok" )
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 97e00318-b5f5-49d5-9c80-de60fe284416
 
 	measure 'Registros P0 Rojo' =
@@ -162,7 +162,7 @@ table _Medidas
 			CALCULATE ( COUNTROWS ( fact_kardex ),
 			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Rojo" )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 19613a9d-811c-465d-b870-7598804f2dcf
 
 	measure 'Registros P0 Ambar' =
@@ -170,7 +170,7 @@ table _Medidas
 			CALCULATE ( COUNTROWS ( fact_kardex ),
 			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Ámbar" )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 8072bb83-3eb1-4634-8a48-5398f022ed29
 
 	measure 'Valor P0 Rojo' =
@@ -178,7 +178,7 @@ table _Medidas
 			CALCULATE ( [Valorizacion Kardex],
 			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Rojo" )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 72878d95-bac7-4a82-9005-2c482400b1f3
 
 	measure 'Valor P0 Ambar' =
@@ -186,17 +186,17 @@ table _Medidas
 			CALCULATE ( [Valorizacion Kardex],
 			    fact_kardex[POLITICA CJE AL 30SEP] = "P0", fact_kardex[alerta_antiguedad] = "Ámbar" )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: a3b6b39d-1bf6-4061-a373-c67bc9d50d76
 
 	measure 'Registros P0 Envejecidos' = [Registros P0 Rojo] + [Registros P0 Ambar]
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 2b0bc5c9-5022-4e19-bc79-c4e579747883
 
 	measure 'Valor P0 Envejecidos' = [Valor P0 Rojo] + [Valor P0 Ambar]
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: cafb1f89-f914-4b3b-8cec-346c2b1ed427
 
 	measure 'Eval P0 Envejecidos' =
@@ -207,25 +207,25 @@ table _Medidas
 			    [Registros P0 Ambar] > 0, "Revisar",
 			    "Ok"
 			)
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: be0f7fde-c271-4275-a50e-616ed6e78117
 
 	measure 'Registros Errores Datos' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[tiene_nulos] = TRUE () )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 83eafe37-665e-4088-8696-28bd84b08c27
 
 	measure 'Valor Errores Datos' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[tiene_nulos] = TRUE () )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 307d6817-7be2-4aa3-9052-3e63b3af41e2
 
 	measure 'Eval Errores Datos' = IF ( [Registros Errores Datos] > 0, "Corregir", "Ok" )
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: e80f493c-e6c6-4502-aba6-d8571ab04f84
 
 	measure 'Valorizacion Mes Anterior' =
@@ -235,7 +235,7 @@ table _Medidas
 			    CALCULATE ( [Valorizacion Kardex],
 			        REMOVEFILTERS ( dim_calendario ), dim_calendario[idx_mes] = m - 1 )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: b0cd70a1-65a8-449b-bdd7-56b118bde56d
 
 	measure 'Variacion CLP' =
@@ -243,38 +243,38 @@ table _Medidas
 			IF ( MAX ( dim_calendario[idx_mes] ) = 1, BLANK (),
 			    [Valorizacion Kardex] - [Valorizacion Mes Anterior] )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 8f5fd6fa-e0ab-48b8-82e7-2f1d2a354128
 
 	measure 'Variacion %' = DIVIDE ( [Variacion CLP], ABS ( [Valorizacion Mes Anterior] ) )
 		formatString: 0.00%;-0.00%;0.00%
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 9f3785d2-320d-4126-bb6d-9a503ea595a1
 
 	measure 'Eval Variacion' =
 			
 			IF ( MAX ( dim_calendario[idx_mes] ) = 1, "Sin mes anterior",
 			    IF ( ABS ( [Variacion %] ) >= [Umbral Variacion], "Revisar", "Ok" ) )
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 7f1d827e-66ed-4b28-82f2-ce3fd625729a
 
 	measure 'Registros Revisar' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[estado_general] = "REVISAR" )
 		formatString: 0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: 99a74334-62aa-450d-a878-dccc4b5bc65e
 
 	measure 'Valor Revisar' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[estado_general] = "REVISAR" )
 		formatString: #,0
-		displayFolder: 3 Criterios
+		displayFolder: 03 Criterios
 		lineageTag: ac67f044-2bf9-4444-9d4d-d7c6a51de348
 
 	measure 'SKU Unicos' = DISTINCTCOUNTNOBLANK ( fact_kardex[CODIGO] )
 		formatString: 0
-		displayFolder: 5 SKU
+		displayFolder: 05 SKU
 		lineageTag: 41e50650-9b3b-46ca-bb1b-d028ebac8755
 
 	measure 'SKU Unicos Mes Anterior' =
@@ -283,21 +283,21 @@ table _Medidas
 			RETURN
 			    CALCULATE ( [SKU Unicos], REMOVEFILTERS ( dim_calendario ), dim_calendario[idx_mes] = m - 1 )
 		formatString: 0
-		displayFolder: 5 SKU
+		displayFolder: 05 SKU
 		lineageTag: b0ad88d0-9fc0-4c23-9187-cf9e4c2ac65c
 
 	measure 'Variacion SKU' =
 			
 			IF ( MAX ( dim_calendario[idx_mes] ) = 1, BLANK (), [SKU Unicos] - [SKU Unicos Mes Anterior] )
 		formatString: 0
-		displayFolder: 5 SKU
+		displayFolder: 05 SKU
 		lineageTag: 17188bd0-bc59-472a-8c59-ecd3b67d4ea7
 
 	measure 'SKU Nuevos' =
 			
 			CALCULATE ( DISTINCTCOUNTNOBLANK ( fact_kardex[CODIGO] ), fact_kardex[flag_sku_nuevo] = TRUE () )
 		formatString: 0
-		displayFolder: 5 SKU
+		displayFolder: 05 SKU
 		lineageTag: 3a6e2c4c-3c99-4ba0-885e-b297fc9f502d
 
 	measure 'SKU Salieron' =
@@ -310,7 +310,7 @@ table _Medidas
 			RETURN
 			    IF ( m = 1, BLANK (), COUNTROWS ( EXCEPT ( anteriores, actuales ) ) )
 		formatString: 0
-		displayFolder: 5 SKU
+		displayFolder: 05 SKU
 		lineageTag: 576134c0-ae41-46cd-b2f4-f8b76b59c755
 
 	measure 'Criterio Evaluacion' =
@@ -327,7 +327,7 @@ table _Medidas
 			    8, [Eval P0 Envejecidos],
 			    9, [Eval Errores Datos]
 			)
-		displayFolder: 4 Semáforo
+		displayFolder: 04 Semáforo
 		lineageTag: 4ecbac20-032e-460e-9903-c697fa53c974
 
 	measure 'Criterio Registros' =
@@ -343,7 +343,7 @@ table _Medidas
 			    9, [Registros Errores Datos]
 			)
 		formatString: 0
-		displayFolder: 4 Semáforo
+		displayFolder: 04 Semáforo
 		lineageTag: 719591c8-b575-4e13-906c-e0635aec001b
 
 	measure 'Criterio Valor' =
@@ -361,7 +361,7 @@ table _Medidas
 			    9, [Valor Errores Datos]
 			)
 		formatString: #,0
-		displayFolder: 4 Semáforo
+		displayFolder: 04 Semáforo
 		lineageTag: f9deff74-827b-45a8-90d2-8f70fb55ec3c
 
 	measure 'Criterio Nivel' =
@@ -376,38 +376,38 @@ table _Medidas
 			        BLANK ()
 			    )
 		formatString: 0
-		displayFolder: 4 Semáforo
+		displayFolder: 04 Semáforo
 		lineageTag: 73366849-c2bf-4805-a36b-c822f35758a8
 
 	measure '% Valor por Alerta' =
 			
 			DIVIDE ( [Valorizacion Kardex], CALCULATE ( [Valorizacion Kardex], REMOVEFILTERS ( dim_alerta ) ) )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: d35b28b7-5348-4f8b-8006-429e860f5d15
 
 	measure 'Valor Rojo' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_antiguedad] = "Rojo" )
 		formatString: #,0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 9a8743a3-47c9-4c95-a98c-310738873817
 
 	measure '% Valor Rojo' = DIVIDE ( [Valor Rojo], [Valorizacion Kardex] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: b91ca2c1-2ef4-4647-a648-ad2a2ade4ead
 
 	measure 'Valor Ambar' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[alerta_antiguedad] = "Ámbar" )
 		formatString: #,0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 810f2e10-cae4-4909-9f18-3cd7e78540e5
 
 	measure '% Valor Ambar' = DIVIDE ( [Valor Ambar], [Valorizacion Kardex] )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 02da1b0a-b0a2-45e6-9448-217ed8392606
 
 	measure 'Antiguedad Ponderada' =
@@ -421,7 +421,7 @@ table _Medidas
 			        SUMX ( registros, fact_kardex[VALORIZACION] )
 			    )
 		formatString: 0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 99afac50-b34a-46b8-ae43-34653ad519fc
 
 	measure 'Valor Recuperable Canje' =
@@ -430,7 +430,7 @@ table _Medidas
 			    fact_kardex[POLITICA CJE AL 30SEP] = "P1",
 			    fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
 		formatString: #,0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 3bff8de5-1393-4f84-ae62-71c375b482ea
 
 	measure 'Registros Recuperable Canje' =
@@ -439,35 +439,35 @@ table _Medidas
 			    fact_kardex[POLITICA CJE AL 30SEP] = "P1",
 			    fact_kardex[alerta_antiguedad] IN { "Ámbar", "Rojo" } )
 		formatString: 0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 17de5fcd-2852-4697-96d8-aa9d22f20347
 
 	measure 'Registros Proximo Rojo' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_proximo_rojo] = TRUE () )
 		formatString: 0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 6bba4779-1d9c-4576-8316-9aa71c249f3a
 
 	measure 'Valor Proximo Rojo' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_proximo_rojo] = TRUE () )
 		formatString: #,0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: b4f6ea8c-90d1-4e90-aaa7-b9288e2a26ef
 
 	measure 'Registros Migro Rojo' =
 			
 			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[flag_migro_a_rojo] = TRUE () )
 		formatString: 0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 1f8340e9-c98c-41b1-aaaf-42056a442e02
 
 	measure 'Valor Migro Rojo' =
 			
 			CALCULATE ( [Valorizacion Kardex], fact_kardex[flag_migro_a_rojo] = TRUE () )
 		formatString: #,0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 13c296ed-3880-4f09-a101-7c34bdd0bf90
 
 	measure 'Pareto % Acumulado' =
@@ -479,7 +479,7 @@ table _Medidas
 			RETURN
 			    IF ( ISBLANK ( actual ), BLANK (), DIVIDE ( acumulado, total ) )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 32a838a9-4e6b-43fb-8431-3166b1a44626
 
 	measure 'SKU Pareto' =
@@ -491,7 +491,7 @@ table _Medidas
 			    )
 			)
 		formatString: 0
-		displayFolder: 6 Antigüedad y Canje
+		displayFolder: 06 Antigüedad y Canje
 		lineageTag: 3525c9ef-960b-4a22-afd5-9be00b9b61d8
 
 	measure 'Saldo Balanza Mes Anterior' =
@@ -500,7 +500,7 @@ table _Medidas
 			RETURN
 			    CALCULATE ( [Saldo Balanza], REMOVEFILTERS ( dim_calendario ), dim_calendario[idx_mes] = m - 1 )
 		formatString: #,0
-		displayFolder: 7 Variación
+		displayFolder: 07 Variación
 		lineageTag: bb0fcfd2-2f04-4ab2-bda4-8f78fa1f612e
 
 	measure 'Variacion Balanza CLP' =
@@ -508,34 +508,372 @@ table _Medidas
 			IF ( MAX ( dim_calendario[idx_mes] ) = 1, BLANK (),
 			    [Saldo Balanza] - [Saldo Balanza Mes Anterior] )
 		formatString: #,0
-		displayFolder: 7 Variación
+		displayFolder: 07 Variación
 		lineageTag: 682b6172-7337-4101-863c-286eaae8a251
 
 	measure 'Variacion Balanza %' =
 			
 			DIVIDE ( [Variacion Balanza CLP], ABS ( [Saldo Balanza Mes Anterior] ) )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 7 Variación
+		displayFolder: 07 Variación
 		lineageTag: 06206b5a-a90f-4ae0-960d-c69baaeb5b4b
 
 	measure 'Eval Variacion Balanza' =
 			
 			IF ( MAX ( dim_calendario[idx_mes] ) = 1, "Sin mes anterior",
 			    IF ( ABS ( [Variacion Balanza %] ) >= [Umbral Variacion], "Revisar", "Ok" ) )
-		displayFolder: 7 Variación
+		displayFolder: 07 Variación
 		lineageTag: dacc4bea-1bb5-4542-900a-437c3d0cc900
 
 	measure 'Contribucion %' =
 			
 			DIVIDE ( [Variacion CLP], CALCULATE ( [Variacion CLP], REMOVEFILTERS ( dim_producto[CODIGO] ) ) )
 		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: 7 Variación
+		displayFolder: 07 Variación
 		lineageTag: f130def9-4c9a-43be-94f6-880fb4ca1514
 
 	measure 'Variacion CLP Absoluta' = ABS ( [Variacion CLP] )
 		formatString: #,0
-		displayFolder: 7 Variación
+		displayFolder: 07 Variación
 		lineageTag: ac4fa4cc-8b70-40f3-a5b8-e2b4bcc8e44e
+
+	measure Registros = COUNTROWS ( fact_kardex )
+		formatString: 0
+		displayFolder: 08 Calidad de Datos
+		lineageTag: 8567f9d5-92db-4929-94b9-d44efc393431
+
+	measure 'Valor Absoluto Kardex' = SUMX ( fact_kardex, ABS ( fact_kardex[VALORIZACION] ) )
+		formatString: #,0
+		displayFolder: 08 Calidad de Datos
+		lineageTag: a5e53671-fdbc-4983-b046-6b93520473cd
+
+	measure '% Registros Sin Errores' = 1 - DIVIDE ( [Registros Errores Datos], [Registros] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 08 Calidad de Datos
+		lineageTag: 1b0dc087-c6ac-4070-b47e-9914afa77dd6
+
+	measure 'Registros Alertas Nuevas' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ), fact_kardex[es_alerta_nueva] = TRUE () )
+		formatString: 0
+		displayFolder: 08 Calidad de Datos
+		lineageTag: 325e5392-c552-4209-95b5-0a948870766e
+
+	measure 'Registros Alertas Recurrentes' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ),
+			    fact_kardex[estado_general] = "REVISAR", fact_kardex[es_alerta_nueva] = FALSE () )
+		formatString: 0
+		displayFolder: 08 Calidad de Datos
+		lineageTag: 91843c63-dfb3-4e5b-a54f-486fa4cc1cec
+
+	measure 'Calidad Registros' =
+			
+			VAR o = SELECTEDVALUE ( dim_calidad[orden] )
+			RETURN
+			    COUNTROWS (
+			        FILTER ( fact_kardex,
+			            SWITCH ( o,
+			                1, fact_kardex[flag_naturaleza_contraria],
+			                2, fact_kardex[alerta_stock] = "Negativo",
+			                3, fact_kardex[alerta_stock] = "Cero",
+			                4, fact_kardex[alerta_stock] = "Sin dato",
+			                5, fact_kardex[alerta_costo] = "Inválido",
+			                6, fact_kardex[flag_dif_valorizacion],
+			                7, fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" },
+			                8, fact_kardex[flag_duplicado],
+			                9, fact_kardex[flag_fulcom_futura],
+			                10, fact_kardex[tiene_nulos],
+			                11, fact_kardex[estado_general] = "REVISAR",
+			                FALSE ()
+			            )
+			        )
+			    )
+		formatString: 0
+		displayFolder: 08 Calidad de Datos
+		lineageTag: b44de622-1f5e-4350-b8c3-9fed34d984f8
+
+	measure 'Calidad Valor' =
+			
+			VAR o = SELECTEDVALUE ( dim_calidad[orden] )
+			RETURN
+			    SUMX (
+			        FILTER ( fact_kardex,
+			            SWITCH ( o,
+			                1, fact_kardex[flag_naturaleza_contraria],
+			                2, fact_kardex[alerta_stock] = "Negativo",
+			                3, fact_kardex[alerta_stock] = "Cero",
+			                4, fact_kardex[alerta_stock] = "Sin dato",
+			                5, fact_kardex[alerta_costo] = "Inválido",
+			                6, fact_kardex[flag_dif_valorizacion],
+			                7, fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" },
+			                8, fact_kardex[flag_duplicado],
+			                9, fact_kardex[flag_fulcom_futura],
+			                10, fact_kardex[tiene_nulos],
+			                11, fact_kardex[estado_general] = "REVISAR",
+			                FALSE ()
+			            )
+			        ), fact_kardex[VALORIZACION]
+			    )
+		displayFolder: 08 Calidad de Datos
+		lineageTag: 343845da-4336-4f63-9910-bda8c65c34a1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Calidad Valor Absoluto' =
+			
+			VAR o = SELECTEDVALUE ( dim_calidad[orden] )
+			RETURN
+			    SUMX (
+			        FILTER ( fact_kardex,
+			            SWITCH ( o,
+			                1, fact_kardex[flag_naturaleza_contraria],
+			                2, fact_kardex[alerta_stock] = "Negativo",
+			                3, fact_kardex[alerta_stock] = "Cero",
+			                4, fact_kardex[alerta_stock] = "Sin dato",
+			                5, fact_kardex[alerta_costo] = "Inválido",
+			                6, fact_kardex[flag_dif_valorizacion],
+			                7, fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" },
+			                8, fact_kardex[flag_duplicado],
+			                9, fact_kardex[flag_fulcom_futura],
+			                10, fact_kardex[tiene_nulos],
+			                11, fact_kardex[estado_general] = "REVISAR",
+			                FALSE ()
+			            )
+			        ), ABS(fact_kardex[VALORIZACION])
+			    )
+		displayFolder: 08 Calidad de Datos
+		lineageTag: f01c4ae1-2ad5-4ecc-9e72-befc4f74fc92
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Calidad Nuevas' =
+			
+			VAR o = SELECTEDVALUE ( dim_calidad[orden] )
+			RETURN
+			    COUNTROWS (
+			        FILTER ( FILTER ( fact_kardex, fact_kardex[es_alerta_nueva] = TRUE () ),
+			            SWITCH ( o,
+			                1, fact_kardex[flag_naturaleza_contraria],
+			                2, fact_kardex[alerta_stock] = "Negativo",
+			                3, fact_kardex[alerta_stock] = "Cero",
+			                4, fact_kardex[alerta_stock] = "Sin dato",
+			                5, fact_kardex[alerta_costo] = "Inválido",
+			                6, fact_kardex[flag_dif_valorizacion],
+			                7, fact_kardex[alerta_conversion] IN { "Inválido", "Revisar" },
+			                8, fact_kardex[flag_duplicado],
+			                9, fact_kardex[flag_fulcom_futura],
+			                10, fact_kardex[tiene_nulos],
+			                11, fact_kardex[estado_general] = "REVISAR",
+			                FALSE ()
+			            )
+			        )
+			    )
+		formatString: 0
+		displayFolder: 08 Calidad de Datos
+		lineageTag: 7837ce59-5dca-4a8b-8f78-ed1a116fcb03
+
+	measure 'Moneda Seleccionada' = SELECTEDVALUE ( Moneda[moneda], "CLP" )
+		displayFolder: 09 Moneda
+		lineageTag: 7001cd44-827b-454b-8943-48ed6d3e954d
+
+	measure 'Factor Moneda' =
+			
+			IF ( [Moneda Seleccionada] = "MXN", MAX ( dim_calendario[tc_clp_mxn] ), 1 )
+		formatString: 0.0000
+		displayFolder: 09 Moneda
+		lineageTag: f799dd5c-4496-4890-bcab-3818c00bef85
+
+	measure 'Valorizacion Kardex (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valorizacion Kardex] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: f8c6d162-576d-463d-9481-7fba5439bed1
+
+	measure 'Valorizacion Kardex Total (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valorizacion Kardex Total] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: aeb6832c-b67f-4ab9-844c-15ad3ce65515
+
+	measure 'Saldo Balanza (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Saldo Balanza] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 7ad00674-5e2d-4270-b8bb-8fe6d96200f5
+
+	measure 'Diferencia (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Diferencia] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 05461cda-28f3-4676-87f5-723aed218c18
+
+	measure 'Criterio Valor (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Criterio Valor] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 880f34f9-cc7f-4ed6-86d0-1c4c87a97d74
+
+	measure 'Valor Rojo (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Rojo] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 1c5f32ea-fc33-4cfe-bbd1-7edd5a69a060
+
+	measure 'Valor P0 Rojo (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor P0 Rojo] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: f602eeac-430b-45a4-8448-3eb6e197d036
+
+	measure 'Valor Recuperable Canje (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Recuperable Canje] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 8bf61094-bce7-481b-a07f-1f66c6253656
+
+	measure 'Valor Revisar (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Revisar] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 6cdfdcf1-8f20-4499-bdf3-a4e9c2fa5ac7
+
+	measure 'Calidad Valor (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Calidad Valor] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: a964bc6b-8558-4df1-a7d5-ce3f6caf648a
+
+	measure 'Valor Ambar (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Ambar] * [Factor Moneda] )
+		displayFolder: 09 Moneda
+		lineageTag: 1fe5fccc-a3e7-4182-bc17-5ad6a26ca4e5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Valor P0 Ambar (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor P0 Ambar] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 5e191d9b-2604-4f8e-98f3-1a10bc53da11
+
+	measure 'Valor P0 Envejecidos (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor P0 Envejecidos] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: ac954089-7438-47fc-8592-4c14b04c826f
+
+	measure 'Valor Proximo Rojo (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Proximo Rojo] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 95ad3f70-3481-4071-8bab-46b472d2c060
+
+	measure 'Valor Migro Rojo (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Migro Rojo] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 6f4d5b60-a3a6-4cc4-af21-70e118b97c12
+
+	measure 'Valor Antiguedad (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Antiguedad] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 33bc7d85-c0e4-43ed-ad3c-440593314b44
+
+	measure 'Calidad Valor Absoluto (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Calidad Valor Absoluto] * [Factor Moneda] )
+		formatString: #,0
+		displayFolder: 09 Moneda
+		lineageTag: 6fd2290f-f659-4dd5-a092-5871d6090f08
+
+	measure 'Valor Absoluto Kardex (moneda)' =
+			
+			SUMX ( VALUES ( dim_calendario[periodo] ), [Valor Absoluto Kardex] * [Factor Moneda] )
+		displayFolder: 09 Moneda
+		lineageTag: 2ddbfebf-7762-4303-a96b-c827e2833f34
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Registros Sin Categoria' =
+			
+			CALCULATE (
+			    COUNTROWS ( fact_kardex ),
+			    REMOVEFILTERS ( fact_kardex ),
+			    FILTER (
+			        ALL ( fact_kardex[alerta_antiguedad], fact_kardex[estado_general] ),
+			        ISBLANK ( fact_kardex[alerta_antiguedad] ) || ISBLANK ( fact_kardex[estado_general] )
+			    )
+			) + 0
+		formatString: 0
+		displayFolder: 10 Control
+		lineageTag: fb15b1d3-93b1-4477-bd74-0f057860fc70
+
+	measure 'Periodos Balanza Invalida' =
+			
+			COUNTROWS (
+			    FILTER (
+			        ALL ( dim_calendario[periodo] ),
+			        CALCULATE ( COUNTROWS ( fact_balanza ),
+			            ALLEXCEPT ( dim_calendario, dim_calendario[periodo] ) ) <> 1
+			    )
+			) + 0
+		formatString: 0
+		displayFolder: 10 Control
+		lineageTag: 5250edcb-d8a0-468c-a082-e386cf12aeba
+
+	measure 'Periodos Sin Tipo Cambio' =
+			
+			CALCULATE ( COUNTROWS ( dim_calendario ),
+			    REMOVEFILTERS ( dim_calendario ), ISBLANK ( dim_calendario[tc_clp_mxn] ) ) + 0
+		formatString: 0
+		displayFolder: 10 Control
+		lineageTag: fd67484e-8bec-4e86-80ed-0eba8b96d4ff
+
+	measure 'Tipo Cambio Invalido' =
+			
+			CALCULATE ( COUNTROWS ( dim_calendario ),
+			    REMOVEFILTERS ( dim_calendario ), dim_calendario[tc_clp_mxn] >= 1 ) + 0
+		formatString: 0
+		displayFolder: 10 Control
+		lineageTag: fa82e6b6-f408-4026-8361-115ddb9eff63
+
+	measure 'Registros Periodo Inconsistente' =
+			
+			CALCULATE ( COUNTROWS ( fact_kardex ),
+			    REMOVEFILTERS ( fact_kardex ), fact_kardex[flag_periodo_inconsistente] = TRUE () ) + 0
+		formatString: 0
+		displayFolder: 10 Control
+		lineageTag: f64167ec-b6c6-4ff6-a445-fa13dc79abea
+
+	measure 'Total Problemas Refresco' =
+			
+			[Registros Sin Categoria] + [Periodos Balanza Invalida] + [Periodos Sin Tipo Cambio]
+			    + [Tipo Cambio Invalido] + [Registros Periodo Inconsistente]
+		formatString: 0
+		displayFolder: 10 Control
+		lineageTag: d23a0ddd-d031-4f46-b91d-dd896c36ac6c
+
+	measure 'Refresco Valido' = IF ( [Total Problemas Refresco] = 0, "Sí", "No" )
+		displayFolder: 10 Control
+		lineageTag: 1ac53828-cad5-4ea9-8893-4aeb1768e334
 
 	partition _Medidas = m
 		mode: import

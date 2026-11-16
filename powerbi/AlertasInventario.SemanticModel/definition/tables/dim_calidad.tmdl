@@ -1,0 +1,34 @@
+table dim_calidad
+	lineageTag: 05470e16-efd1-45f2-b714-867fa99dcfc8
+
+	column orden
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d321842-1cd2-4b7e-bce6-5f9f09131d56
+		summarizeBy: sum
+		sourceColumn: orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column alerta_calidad
+		dataType: string
+		lineageTag: 955ea013-3429-4c56-8bda-d63b055cbe3d
+		summarizeBy: none
+		sourceColumn: alerta_calidad
+		sortByColumn: orden
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_calidad = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("Pc89bsMwDAXgqxCaM9T9SzqnyNS0Q9sshgdCUgIiAhlQtAffpmfoEXKxyBKQ9XuPINn3rnMr94k2KqY4I3hhU1RCN6x691jCbxN/Bo4nNJqk8tOdfdRGz3fKxBDQGr8U3ko2AeLp+pcoNH8tfsAkSjN6uv4zsIAfMWhbvK5zPEXNNQ2UjdgQQoSuNjal8T5eEnkMkiu9Fdr9fmy/9nAcl4+qdg9LsxyU4YjJkC22ere8/iOGCRA0TpRR3TDcAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [orden = _t, alerta_calidad = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"orden", Int64.Type}, {"alerta_calidad", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_ResultType = Table
+
