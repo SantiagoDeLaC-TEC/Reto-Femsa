@@ -1,0 +1,83 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "7c741735e00b6e7cbd9a",
+  "position": {
+    "x": 10,
+    "y": 0,
+    "z": 0,
+    "height": 280,
+    "width": 280,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_alerta"
+                    }
+                  },
+                  "Property": "alerta"
+                }
+              },
+              "queryRef": "dim_alerta.alerta",
+              "nativeQueryRef": "Categoría",
+              "displayName": "Categoría"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Registros"
+                }
+              },
+              "queryRef": "_Medidas.Registros",
+              "nativeQueryRef": "Registros"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Valorizacion Kardex (moneda)"
+                }
+              },
+              "queryRef": "_Medidas.Valorizacion Kardex (moneda)",
+              "nativeQueryRef": "Valor",
+              "displayName": "Valor"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "% Valor por Alerta"
+                }
+              },
+              "queryRef": "_Medidas.% Valor por Alerta",
+              "nativeQueryRef": "% del valor",
+              "displayName": "% del valor"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

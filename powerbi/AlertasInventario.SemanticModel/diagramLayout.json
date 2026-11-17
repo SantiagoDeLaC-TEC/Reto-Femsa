@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 307.97008205642271,
-        "y": 117.84569466444746
+        "x": 0,
+        "y": 0
       },
       "nodes": [
         {
@@ -16,54 +16,54 @@
           "nodeIndex": "Parametros",
           "nodeLineageTag": "b625cc5c-72c9-4f87-82f6-a9d8a6419d13",
           "size": {
-            "height": 128,
+            "height": 157.62689653535188,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
         },
         {
           "location": {
             "x": 355.78254865093464,
-            "y": 206.80019864870889
+            "y": 227.22678572387977
           },
           "nodeIndex": "dim_calendario",
           "nodeLineageTag": "4866cce3-404c-49cb-a6ac-048e58d754e8",
           "size": {
-            "height": 266.72539729741754,
+            "height": 257.29774172426175,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 2
         },
         {
           "location": {
-            "x": 368.26428783837923,
+            "x": 354.12280447864549,
             "y": 0
           },
           "nodeIndex": "fact_balanza",
           "nodeLineageTag": "e6a4e13a-55cf-4e3f-9b16-c124cbccc17a",
           "size": {
-            "height": 176,
+            "height": 186.99893150201513,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 3
         },
         {
           "location": {
-            "x": 635.2825486509347,
-            "y": 298.51342207108956
+            "x": 683.63237803720619,
+            "y": 0
           },
           "nodeIndex": "fact_kardex",
           "nodeLineageTag": "2fa4d18f-a96c-4a12-94cf-d056e0ab40d6",
           "size": {
-            "height": 300,
+            "height": 1000,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 10
         },
         {
           "location": {
-            "x": 356.65793107969745,
-            "y": 506.6218927931136
+            "x": 355.08665515083817,
+            "y": 607.18355224010884
           },
           "nodeIndex": "dim_producto",
           "nodeLineageTag": "90d45076-5edd-4815-b2dc-b200a6c4319f",
@@ -71,12 +71,12 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 4
         },
         {
           "location": {
-            "x": 629.05529234268329,
-            "y": 653.7203036034432
+            "x": 683.37462713448929,
+            "y": 1036.188814551904
           },
           "nodeIndex": "dim_alerta",
           "nodeLineageTag": "b42efc5b-8526-4110-b91e-96ef2ed5a368",
@@ -84,12 +84,12 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 5
         },
         {
           "location": {
-            "x": 1019.157676127189,
-            "y": 32.851645493470144
+            "x": 1017.1825496914989,
+            "y": 7.1750018294984841
           },
           "nodeIndex": "Moneda",
           "nodeLineageTag": "1404cf66-c286-45d8-a42d-0e05f790f7a6",
@@ -97,38 +97,38 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 6
         },
         {
           "location": {
-            "x": 1019.7767166659248,
-            "y": 286.00919414440477
+            "x": 1312.0954291480639,
+            "y": 0
           },
           "nodeIndex": "_Medidas",
           "nodeLineageTag": "b2d58dc1-3dd8-4afe-94ba-36812cb752ff",
           "size": {
-            "height": 104,
+            "height": 1000,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 9
         },
         {
           "location": {
-            "x": 1023.4154126002363,
-            "y": 407.9962926715308
+            "x": 1015.5149068574758,
+            "y": 342.81712029375655
           },
           "nodeIndex": "dim_criterio",
           "nodeLineageTag": "42d2365b-0bbb-4179-806e-c80230d6763a",
           "size": {
-            "height": 128,
+            "height": 147.75126435690129,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 7
         },
         {
           "location": {
-            "x": 1023.9115566768296,
-            "y": 550.98240219772708
+            "x": 1019.9613038054492,
+            "y": 519.380379226685
           },
           "nodeIndex": "dim_calidad",
           "nodeLineageTag": "05470e16-efd1-45f2-b714-867fa99dcfc8",
@@ -136,11 +136,11 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 8
         }
       ],
       "name": "Todas las tablas",
-      "zoomValue": 63.642545630159994,
+      "zoomValue": 50.629670178587347,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

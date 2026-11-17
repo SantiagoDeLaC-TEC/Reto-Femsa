@@ -1,0 +1,10 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "c1319ab841d35522080d",
+  "displayName": "TT Antigüedad",
+  "displayOption": "ActualSize",
+  "height": 300,
+  "width": 400,
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}
