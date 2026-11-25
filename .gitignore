@@ -20,6 +20,7 @@ models/
 ## Datos: Ajustar extensiones según se necesite
 data/raw/*.xlsx
 data/processed/*.xlsx
+data/processed/*.csv
 !data/processed/.gitkeep
 
 ## Reportes
@@ -60,3 +61,9 @@ Thumbs.db
 
 # Excel: archivos temporales que crea al abrir un libro
 ~$*.xlsx
+## Datos originales de SharePoint (sin cifrar): nunca se suben
+Inventarios/
+data/*.zip
+
+## Notebooks ejecutados con datos reales (contienen resultados)
+*_ejecutado.ipynb
