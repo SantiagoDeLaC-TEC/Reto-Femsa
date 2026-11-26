@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "def75ecf17f0fd374bbf",
+  "displayName": "Antigüedad y variaciones",
+  "displayOption": "FitToWidth",
+  "height": 1000,
+  "width": 1280,
+  "pageBinding": {
+    "name": "1fc86b441d821acb3f1e",
+    "type": "Default",
+    "parameters": []
+  },
+  "objects": {
+    "displayArea": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "e5db3e5c84173affa29c",
+      "target": "e2c4e282e587fce4e6c0",
+      "type": "NoFilter"
+    }
+  ]
+}

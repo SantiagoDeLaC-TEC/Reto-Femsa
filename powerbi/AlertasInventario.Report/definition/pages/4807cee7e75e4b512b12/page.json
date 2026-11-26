@@ -1,0 +1,119 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "4807cee7e75e4b512b12",
+  "displayName": "Detalle del SKU",
+  "displayOption": "ActualSize",
+  "height": 1000,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7d00c64cdc0ed342c29e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_producto"
+              }
+            },
+            "Property": "CODIGO"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "dim_producto",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
+                          }
+                        },
+                        "Property": "CODIGO"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'SKU_001419'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "724ff5be10c59bc19d92",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "ca9b98cd6e4dfa92ce3f",
+        "boundFilter": "7d00c64cdc0ed342c29e",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_producto"
+              }
+            },
+            "Property": "CODIGO"
+          }
+        }
+      }
+    ],
+    "acceptsFilterContext": "None"
+  },
+  "objects": {
+    "displayArea": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "6edf30f7d62b1defe5e0",
+      "target": "c1f3f1c823fe4469c4e9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6edf30f7d62b1defe5e0",
+      "target": "cea2d7695690c304e1b0",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6edf30f7d62b1defe5e0",
+      "target": "df7df2c5b2043287dcc3",
+      "type": "NoFilter"
+    }
+  ]
+}

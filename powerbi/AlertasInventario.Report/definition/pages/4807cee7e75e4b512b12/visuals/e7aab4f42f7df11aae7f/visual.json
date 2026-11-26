@@ -1,0 +1,154 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "e7aab4f42f7df11aae7f",
+  "position": {
+    "x": 16.666666666666668,
+    "y": 72,
+    "z": 6000,
+    "height": 110,
+    "width": 1248,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_kardex"
+                        }
+                      },
+                      "Property": "estado_general"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Min(fact_kardex.estado_general)",
+              "nativeQueryRef": "Estado general",
+              "displayName": "Estado general"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dim_alerta"
+                        }
+                      },
+                      "Property": "alerta"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Min(dim_alerta.alerta)",
+              "nativeQueryRef": "Antigüedad",
+              "displayName": "Antigüedad"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_kardex"
+                        }
+                      },
+                      "Property": "dias_antiguedad"
+                    }
+                  },
+                  "Function": 4
+                }
+              },
+              "queryRef": "Sum(fact_kardex.dias_antiguedad)",
+              "nativeQueryRef": "Días sin compra",
+              "displayName": "Días sin compra"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_kardex"
+                        }
+                      },
+                      "Property": "dias_para_rojo"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Sum(fact_kardex.dias_para_rojo)",
+              "nativeQueryRef": "Días para Rojo",
+              "displayName": "Días para Rojo"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "referenceLabelLayout": [
+        {
+          "properties": {
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'right'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "value": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Medidas"
+                        }
+                      },
+                      "Property": "Color Alerta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 0
+                }
+              }
+            ],
+            "metadata": "Min(dim_alerta.alerta)"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

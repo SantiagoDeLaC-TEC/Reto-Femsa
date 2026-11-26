@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "d2641d3d46156ef88778",
+  "displayName": "Calidad de datos",
+  "displayOption": "ActualSize",
+  "height": 1000,
+  "width": 1280,
+  "objects": {
+    "displayArea": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "a306a806d2d0e74e194b",
+      "target": "c2d9ced5a12d4ec6f3c2",
+      "type": "NoFilter"
+    }
+  ]
+}

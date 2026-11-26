@@ -1,0 +1,955 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "252e6f88a8ee73082b84",
+  "position": {
+    "x": 16,
+    "y": 384,
+    "z": 8000,
+    "height": 602,
+    "width": 1248,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_producto"
+                    }
+                  },
+                  "Property": "CODIGO"
+                }
+              },
+              "queryRef": "dim_producto.CODIGO",
+              "nativeQueryRef": "SKU",
+              "displayName": "SKU"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_producto"
+                    }
+                  },
+                  "Property": "NOMBRE LINEA"
+                }
+              },
+              "queryRef": "dim_producto.NOMBRE LINEA",
+              "nativeQueryRef": "Nombre",
+              "displayName": "Nombre"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_producto"
+                    }
+                  },
+                  "Property": "POLITICA CJE AL 30SEP"
+                }
+              },
+              "queryRef": "dim_producto.POLITICA CJE AL 30SEP",
+              "nativeQueryRef": "Política",
+              "displayName": "Política"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "DESCRIPTOR"
+                }
+              },
+              "queryRef": "fact_kardex.DESCRIPTOR",
+              "nativeQueryRef": "Descriptor",
+              "displayName": "Descriptor"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "STOCK"
+                }
+              },
+              "queryRef": "Sum(fact_kardex.STOCK)",
+              "nativeQueryRef": "STOCK",
+              "displayName": "Stock"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "COSTO"
+                }
+              },
+              "queryRef": "Sum(fact_kardex.COSTO)",
+              "nativeQueryRef": "COSTO",
+              "displayName": "Costo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "UNID CONV"
+                }
+              },
+              "queryRef": "Sum(fact_kardex.UNID CONV)",
+              "nativeQueryRef": "UNID CONV",
+              "displayName": "Unidades"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "VALORIZACION"
+                }
+              },
+              "queryRef": "Sum(fact_kardex.VALORIZACION)",
+              "nativeQueryRef": "VALORIZACION",
+              "displayName": "Valorización"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_kardex"
+                            }
+                          },
+                          "Name": "Variation",
+                          "Property": "FULCOM"
+                        }
+                      },
+                      "Hierarchy": "Jerarquía de fechas"
+                    }
+                  },
+                  "Level": "Año"
+                }
+              },
+              "queryRef": "fact_kardex.FULCOM.Variation.Jerarquía de fechas.Año",
+              "nativeQueryRef": "FULCOM Año"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_kardex"
+                            }
+                          },
+                          "Name": "Variation",
+                          "Property": "FULCOM"
+                        }
+                      },
+                      "Hierarchy": "Jerarquía de fechas"
+                    }
+                  },
+                  "Level": "Trimestre"
+                }
+              },
+              "queryRef": "fact_kardex.FULCOM.Variation.Jerarquía de fechas.Trimestre",
+              "nativeQueryRef": "FULCOM Trimestre"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_kardex"
+                            }
+                          },
+                          "Name": "Variation",
+                          "Property": "FULCOM"
+                        }
+                      },
+                      "Hierarchy": "Jerarquía de fechas"
+                    }
+                  },
+                  "Level": "Mes"
+                }
+              },
+              "queryRef": "fact_kardex.FULCOM.Variation.Jerarquía de fechas.Mes",
+              "nativeQueryRef": "FULCOM Mes"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_kardex"
+                            }
+                          },
+                          "Name": "Variation",
+                          "Property": "FULCOM"
+                        }
+                      },
+                      "Hierarchy": "Jerarquía de fechas"
+                    }
+                  },
+                  "Level": "Día"
+                }
+              },
+              "queryRef": "fact_kardex.FULCOM.Variation.Jerarquía de fechas.Día",
+              "nativeQueryRef": "FULCOM Día"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "valor_calculado"
+                }
+              },
+              "queryRef": "Sum(fact_kardex.valor_calculado)",
+              "nativeQueryRef": "valor_calculado",
+              "displayName": "Valor Calculado"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "dif_valorizacion"
+                }
+              },
+              "queryRef": "Sum(fact_kardex.dif_valorizacion)",
+              "nativeQueryRef": "dif_valorizacion",
+              "displayName": "Dif. Valorización"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "dias_antiguedad"
+                }
+              },
+              "queryRef": "Sum(fact_kardex.dias_antiguedad)",
+              "nativeQueryRef": "dias_antiguedad",
+              "displayName": "Días Antigüedad"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_alerta"
+                    }
+                  },
+                  "Property": "alerta"
+                }
+              },
+              "queryRef": "dim_alerta.alerta",
+              "nativeQueryRef": "Alerta",
+              "displayName": "Alerta"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "alerta_stock"
+                }
+              },
+              "queryRef": "fact_kardex.alerta_stock",
+              "nativeQueryRef": "Alerta Stock",
+              "displayName": "Alerta Stock"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "alerta_costo"
+                }
+              },
+              "queryRef": "fact_kardex.alerta_costo",
+              "nativeQueryRef": "Alerta Costo",
+              "displayName": "Alerta Costo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "alerta_conversion"
+                }
+              },
+              "queryRef": "fact_kardex.alerta_conversion",
+              "nativeQueryRef": "Alerta Conversión",
+              "displayName": "Alerta Conversión"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "flag_duplicado"
+                }
+              },
+              "queryRef": "fact_kardex.flag_duplicado",
+              "nativeQueryRef": "Flag Duplicado",
+              "displayName": "Flag Duplicado"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "flag_naturaleza_contraria"
+                }
+              },
+              "queryRef": "fact_kardex.flag_naturaleza_contraria",
+              "nativeQueryRef": "Flag Naturaleza Contraria",
+              "displayName": "Flag Naturaleza Contraria"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "columnas_nulas"
+                }
+              },
+              "queryRef": "fact_kardex.columnas_nulas",
+              "nativeQueryRef": "Columnas Nulas",
+              "displayName": "Columnas Nulas"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "es_alerta_nueva"
+                }
+              },
+              "queryRef": "fact_kardex.es_alerta_nueva",
+              "nativeQueryRef": "Alerta Nueva",
+              "displayName": "Alerta Nueva"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_kardex"
+                    }
+                  },
+                  "Property": "estado_mes_anterior"
+                }
+              },
+              "queryRef": "fact_kardex.estado_mes_anterior",
+              "nativeQueryRef": "Estado Mes Anterior",
+              "displayName": "Estado Mes Anterior"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_kardex"
+                  }
+                },
+                "Property": "VALORIZACION"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Registros en REVISAR'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3ce4669b43a7970ec606",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_alerta"
+              }
+            },
+            "Property": "alerta"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "381c5ccba8c0ac2a9866",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "alerta_conversion"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "724f7877083c51c90f61",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "alerta_costo"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b4c5eb5637254ac3fd2b",
+        "ordinal": 3,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "es_alerta_nueva"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d53df77c9ec99e61cf6c",
+        "ordinal": 4,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "alerta_stock"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "6c6c8d15116c2ec76770",
+        "ordinal": 5,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "columnas_nulas"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "64fd9d9b68878935dd67",
+        "ordinal": 6,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "COSTO"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "02bb30ca13fe145061dc",
+        "ordinal": 7,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "DESCRIPTOR"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "e697f53b12912de36a5c",
+        "ordinal": 8,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "dias_antiguedad"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7c284bcfa6dc236c7c4a",
+        "ordinal": 9,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "dif_valorizacion"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "01d5bc1bfadf1195f3f7",
+        "ordinal": 10,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "estado_mes_anterior"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "d4a9f53cc7ff8963a063",
+        "ordinal": 11,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "flag_duplicado"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "0e0bbfdcc0f5b1b68af7",
+        "ordinal": 12,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "estado_general"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "fact_kardex",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
+                          }
+                        },
+                        "Property": "estado_general"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'REVISAR'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "cc2e42a7ad3a5f33d1ec",
+        "ordinal": 13,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "flag_naturaleza_contraria"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ef8c2e1b126903cfaf99",
+        "ordinal": 14,
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "PropertyVariationSource": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "fact_kardex"
+                      }
+                    },
+                    "Name": "Variation",
+                    "Property": "FULCOM"
+                  }
+                },
+                "Hierarchy": "Jerarquía de fechas"
+              }
+            },
+            "Level": "Año"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4affe8a3cc04fb63bc80",
+        "ordinal": 15,
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "PropertyVariationSource": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "fact_kardex"
+                      }
+                    },
+                    "Name": "Variation",
+                    "Property": "FULCOM"
+                  }
+                },
+                "Hierarchy": "Jerarquía de fechas"
+              }
+            },
+            "Level": "Día"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2625d8f7193ebc8e32fd",
+        "ordinal": 16,
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "PropertyVariationSource": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "fact_kardex"
+                      }
+                    },
+                    "Name": "Variation",
+                    "Property": "FULCOM"
+                  }
+                },
+                "Hierarchy": "Jerarquía de fechas"
+              }
+            },
+            "Level": "Mes"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "62af567c8eebe9e0d9b5",
+        "ordinal": 17,
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "PropertyVariationSource": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "fact_kardex"
+                      }
+                    },
+                    "Name": "Variation",
+                    "Property": "FULCOM"
+                  }
+                },
+                "Hierarchy": "Jerarquía de fechas"
+              }
+            },
+            "Level": "Trimestre"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "adf458597a160c9bcddb",
+        "ordinal": 18,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_producto"
+              }
+            },
+            "Property": "NOMBRE LINEA"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "188780a7ed80d0a70366",
+        "ordinal": 19,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_producto"
+              }
+            },
+            "Property": "POLITICA CJE AL 30SEP"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "fe28295a535864eac34d",
+        "ordinal": 20,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_producto"
+              }
+            },
+            "Property": "CODIGO"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "2395259c889a42fda7cb",
+        "ordinal": 21,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "STOCK"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "88eeab80755a745f7698",
+        "ordinal": 22,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "UNID CONV"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d8d380c68802968d41e0",
+        "ordinal": 23,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "valor_calculado"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e5d7a241338d5efb4311",
+        "ordinal": 24,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_kardex"
+              }
+            },
+            "Property": "VALORIZACION"
+          }
+        },
+        "type": "Advanced"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

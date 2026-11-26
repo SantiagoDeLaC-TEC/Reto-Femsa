@@ -1,0 +1,278 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "b74c1be85cae2b033944",
+  "position": {
+    "x": 548,
+    "y": 72,
+    "z": 7000,
+    "height": 300,
+    "width": 718,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_producto"
+                    }
+                  },
+                  "Property": "CODIGO"
+                }
+              },
+              "queryRef": "dim_producto.CODIGO",
+              "nativeQueryRef": "SKU",
+              "displayName": "SKU"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_producto"
+                    }
+                  },
+                  "Property": "NOMBRE LINEA"
+                }
+              },
+              "queryRef": "dim_producto.NOMBRE LINEA",
+              "nativeQueryRef": "Línea",
+              "displayName": "Línea"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_producto"
+                    }
+                  },
+                  "Property": "POLITICA CJE AL 30SEP"
+                }
+              },
+              "queryRef": "dim_producto.POLITICA CJE AL 30SEP",
+              "nativeQueryRef": "Política",
+              "displayName": "Política"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_kardex"
+                        }
+                      },
+                      "Property": "dias_para_rojo"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Sum(fact_kardex.dias_para_rojo)",
+              "nativeQueryRef": "Min of dias_para_rojo",
+              "displayName": "Días para Rojo"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Valor Proximo Rojo (moneda)"
+                }
+              },
+              "queryRef": "_Medidas.Valor Proximo Rojo (moneda)",
+              "nativeQueryRef": "Valor",
+              "displayName": "Valor"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "fact_kardex"
+                      }
+                    },
+                    "Property": "dias_para_rojo"
+                  }
+                },
+                "Function": 3
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "287.877825630031D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "dim_producto.NOMBRE LINEA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "94.92090490670617D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Medidas.Valor Proximo Rojo (moneda)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "64.34533970057542D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "dim_producto.POLITICA CJE AL 30SEP"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "109.34533949866147D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(fact_kardex.dias_para_rojo)"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Próximos a Rojo (151–180 días)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3d37120942a60a75ee49",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "Valor Proximo Rojo (moneda)"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "_",
+              "Entity": "_Medidas",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "_"
+                        }
+                      },
+                      "Property": "Valor Proximo Rojo (moneda)"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0L"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "62a0d8e3e051b6121e91",
   "position": {
     "x": 16,
@@ -268,6 +268,25 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Medidas.Estado Conciliacion"
+          }
         }
       ],
       "referenceLabel": [
@@ -433,6 +452,25 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Medidas.Estado Conciliacion"
+          }
         }
       ],
       "referenceLabelTitle": [
@@ -542,6 +580,28 @@
           "selector": {
             "metadata": "_Medidas.SKU Unicos"
           }
+        },
+        {
+          "properties": {
+            "valueTransparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "textWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Medidas.Valorizacion Kardex (moneda)",
+            "id": "field-e944e9f1-a44d-f888-8f02-0416d9115e44"
+          }
         }
       ],
       "layout": [
@@ -613,79 +673,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "f0dc8b10ed45e0592468",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Medidas"
-              }
-            },
-            "Property": "Saldo Balanza (moneda)"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "197fc0d06d8734a8d2ed",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Medidas"
-              }
-            },
-            "Property": "Valorizacion Kardex (moneda)"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "3bd6606da8828acdcdb2",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Medidas"
-              }
-            },
-            "Property": "Diferencia (moneda)"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "65b1dd3a052487a3e04e",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Medidas"
-              }
-            },
-            "Property": "Estado Conciliacion"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "8f2645808090a8207a37",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Medidas"
-              }
-            },
-            "Property": "SKU Unicos"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
